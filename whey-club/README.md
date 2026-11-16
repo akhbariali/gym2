@@ -69,7 +69,7 @@ The storefront and journal use soothing lime `#DFF478`, silky white `#F7F3E6`, f
 
 `dist/index.html` is the content-first homepage; `/start/` is generated from `content/start.html` and `/about/` from `content/about.html`. The shop catalog and whey guide are preserved in `content/storefront-catalog.html` and `content/whey-guide.html`, so shop generation no longer depends on a catalog being present on the homepage.
 
-The homepage uses an eight-second, silent H.264 version of the user-provided training clip, with a poster and native playback controls. `dist/homepage.js` respects reduced-motion and data-saving preferences before autoplaying. The original 4K upload remains unchanged outside the public site; only the optimized derivative is served. Social links await actual account URLs. No checkout, daily Telegram/Instagram automation or live deployment was enabled. See `docs/iran-launch.md` for the launch experiment and its limits.
+The homepage uses an eight-second, 1280×720 silent H.264 version of the user-provided training clip, with a poster and native playback controls. The video spans the page directly below the header; desktop text is placed over the empty side of the frame, while mobile text sits below the full-width video so the footage stays visible. `dist/homepage.js` respects reduced-motion and data-saving preferences before autoplaying. The original 4K upload remains unchanged outside the public site; only the optimized derivative is served. Social links await actual account URLs. No checkout, daily Telegram/Instagram automation or live deployment was enabled. See `docs/iran-launch.md` for the launch experiment and its limits.
 
 ### ماشین حساب سلامت
 
