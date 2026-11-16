@@ -60,3 +60,23 @@ The same origin is configured in the publisher service; update it when a real do
 Local journal preview: run `python3 scripts/publish_articles.py --source content/articles.json --output dist --state-dir .publication-state --origin http://localhost:5173`, then start the local HTTP server. Generated journal files and local state are ignored by Git.
 
 Validation: `python3 -m unittest discover -s whey-club/tests -v` from the repository root. Tests cover all 100 rendered pages, the 48-hour boundary, idempotency, clock rollback, downtime, queue exhaustion, rebuilds, HTML escaping, and future article privacy. The storefront remains a demo catalog with checkout disabled.
+
+## Warm theme and page URLs
+
+The storefront uses warm cream/peach/orange surfaces and accents, dark brown text, and a more energetic hero and journal treatment.
+
+Public pages:
+
+- `/shop/`: store landing page with the available whey category.
+- `/shop/whey-protein/`: full whey catalog.
+- `/shop/whey-protein/{isolate,concentrate,blend}/`: specific whey types.
+- `/products/whey-isolate-chocolate/` (and five other descriptive product pages).
+- `/cart/`, `/guide/whey-protein/`, `/about/`.
+- `/blog/what-is-whey-protein/`: descriptive article URLs.
+- `/blog/category/whey-protein/`: published article category pages.
+
+Original `fa-fitness-*` article IDs are retained in the private queue/state for scheduling. `url_slug` is used only for the public URL; the dedicated storefront Nginx configuration issues 301 redirects from the original article addresses. The publisher does not reset dates when URLs change. Sitemap entries include shop/product/guide/about routes and only published journal pages. Cart is marked noindex. Unknown URLs return 404.
+
+Catalog source: `content/products.json`. Build store routes and browser catalog data with `python3 scripts/build_storefront.py --origin http://94.184.25.127:8088` from `whey-club/`, then run the article publisher with `--rebuild` to refresh the sitemap and already-published articles. Root-relative links/assets work on direct visits and reloads of nested URLs. Product pages include canonical tags, product metadata, breadcrumbs, and HTML product details; catalog category links are also present in static HTML. Existing local cart IDs are preserved.
+
+Routing/cart regression tests: `node whey-club/tests/test_storefront.cjs` from the repository root.
