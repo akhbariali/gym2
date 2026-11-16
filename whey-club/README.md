@@ -4,11 +4,11 @@ A responsive Persian / RTL natural-bodybuilding site with training and nutrition
 
 Open `dist/index.html` in a browser, or run `python3 -m http.server 5173 --directory dist` and visit http://localhost:5173.
 
-Features: a content-first homepage with a short training video; an evidence-linked beginner path at `/start/`; published articles; a calorie/protein/BMI calculator; product search, protein/flavor/price filters, sorting, persistent local cart, and a protein guide.
+Features: a content-first homepage with a focused text introduction; an evidence-linked beginner path at `/start/`; published articles; a calorie/protein/BMI calculator; product search, protein/flavor/price filters, sorting, persistent local cart, and a protein guide.
 
 The brand, six products, packaging, nutrition values, and prices are illustrative. Payment and real order submission are not connected. Replace sample catalog data in `dist/app.js` before launch. Fonts use Google Fonts with system fallbacks.
 
-Checks include Python route/publishing tests, Node catalog/calculator checks, actual Chrome desktop/mobile layouts, video decoding/playback, reduced-motion and data-saving behavior, product search/cart, and local HTTP previews.
+Checks include Python route/publishing tests, Node catalog/calculator checks, actual Chrome desktop/mobile layouts, product search/cart, and local HTTP previews.
 
 A private Sites project is registered in `.openai/hosting.json`, but publication did not complete: both initial and refreshed source credentials were already expired relative to the local clock. No live deployment has been verified.
 
@@ -69,7 +69,7 @@ The storefront and journal use soothing lime `#DFF478`, silky white `#F7F3E6`, f
 
 `dist/index.html` is the content-first homepage; `/start/` is generated from `content/start.html` and `/about/` from `content/about.html`. The shop catalog and whey guide are preserved in `content/storefront-catalog.html` and `content/whey-guide.html`, so shop generation no longer depends on a catalog being present on the homepage.
 
-`dist/homepage.js` starts the muted, looping training video only when reduced motion and data-saving mode are off. Native playback controls and a poster remain available. The local MP4 is 8 seconds, 960×540 and about 650 KB; attribution and licensing are recorded in `dist/assets/MEDIA-LICENSE.md`. Social links await actual account URLs. No checkout, daily Telegram/Instagram automation or live deployment was enabled. See `docs/iran-launch.md` for the launch experiment and its limits.
+The homepage uses a focused text introduction without video or an autoplay script. Social links await actual account URLs. No checkout, daily Telegram/Instagram automation or live deployment was enabled. See `docs/iran-launch.md` for the launch experiment and its limits.
 
 ### ماشین حساب سلامت
 

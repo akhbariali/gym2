@@ -53,21 +53,15 @@ class StorefrontTests(unittest.TestCase):
                 self.assertIn('application/ld+json',text)
                 self.assertIn('BreadcrumbList',text)
                 self.assertIn('data-add="'+str(product['id'])+'"',text)
-    def test_homepage_starter_path_and_local_video(self):
+    def test_homepage_starter_path_without_video(self):
         with tempfile.TemporaryDirectory() as d:
             dest=Path(d);shutil.copy(ROOT/'dist/index.html',dest/'index.html')
             routes=builder.build(dest,'https://example.test')
             self.assertIn('/start/',routes)
             home=(dest/'index.html').read_text();parser=Links();parser.feed(home)
-            self.assertEqual(len(parser.videos),1)
-            video=parser.videos[0]
-            self.assertIn('controls',video)
-            self.assertNotIn('autoplay',video)  # Respect motion/data preferences before playing.
-            self.assertTrue((ROOT/'dist'/video['poster'].lstrip('/')).is_file())
-            self.assertTrue((ROOT/'dist/assets/training.mp4').is_file())
-            self.assertLess((ROOT/'dist/assets/training.mp4').stat().st_size,4_000_000)
-            self.assertIn('/assets/training.mp4',parser.links)
-            self.assertIn('/homepage.js',parser.links)
+            self.assertEqual(parser.videos,[])
+            self.assertNotIn('/assets/training.mp4',parser.links)
+            self.assertNotIn('/homepage.js',parser.links)
             self.assertIn('/start/',parser.links)
             self.assertIn('/shop/',parser.links)
             self.assertNotIn('id="products"',home)

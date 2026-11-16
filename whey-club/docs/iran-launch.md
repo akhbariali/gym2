@@ -34,7 +34,7 @@ Confirm the currently permitted retail/online sales model with Iran's Food and D
 
 The official [TTAC site](https://www.ttac.ir/) was accessible and identifies itself as the Iran Food and Drug Administration's traceability system. Use its official authenticity-verification guidance for applicable products. An authenticity check does not replace seller authorization or guarantee suitability for an individual. Source from permitted suppliers and show real product/batch details rather than unsupported “original” claims.
 
-The current homepage uses a licensed Mixkit training clip. Replace it with original, permissioned footage over time to make the brand more local and distinctive. No model endorsement or natural-status claim is made.
+The homepage currently uses a text introduction without video. If original training footage is added later, obtain permission and avoid implying endorsement or drug-free status without evidence.
 
 ## Launch decision
 
