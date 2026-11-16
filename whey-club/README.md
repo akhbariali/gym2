@@ -63,7 +63,7 @@ Validation: `python3 -m unittest discover -s whey-club/tests -v` from the reposi
 
 ## Color palette and page URLs
 
-The storefront and journal use the Celadon reference palette: cobalt blue `#003F91`, mint `#B9FFC2`, sky blue `#A9DEF9`, and sage `#A0CBA6`. White provides a neutral reading background. Cobalt text and buttons, mint hero sections, and sky/sage panels carry the theme through product illustrations and article pages.
+The storefront and journal use soothing lime `#DFF478`, silky white `#F7F3E6`, floral blue `#92BAD5`, kawaii blue `#788CE3`, and nautical navy `#17243F`. Navy text and buttons, lime hero sections, and floral/periwinkle panels carry the theme through product illustrations and article pages.
 
 Public pages:
 
