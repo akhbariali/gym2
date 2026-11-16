@@ -2,3 +2,8 @@
 *.log
 .env
 .env.*
+__pycache__/
+whey-club/.publication-state/
+whey-club/dist/blog/
+whey-club/dist/sitemap.xml
+whey-club/dist/robots.txt

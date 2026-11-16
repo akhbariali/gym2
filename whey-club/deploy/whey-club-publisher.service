@@ -1,0 +1,24 @@
+[Unit]
+Description=Publish one WHEY CLUB article when the 48-hour interval is due
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /opt/whey-club/publisher/scripts/publish_articles.py --source /opt/whey-club/publisher/content/articles.json --output /opt/whey-club/site --state-dir /var/lib/whey-club-publisher --origin http://94.184.25.127:8088
+StateDirectory=whey-club-publisher
+UMask=0022
+NoNewPrivileges=yes
+ProtectSystem=strict
+ReadWritePaths=/opt/whey-club/site
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+CapabilityBoundingSet=
+RestrictAddressFamilies=AF_UNIX
+MemoryMax=128M
+CPUQuota=20%
+TasksMax=8
+TimeoutStartSec=120
