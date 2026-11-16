@@ -1,14 +1,14 @@
 # WHEY CLUB
 
-A responsive Persian / RTL whey protein storefront built with plain HTML, CSS, and JavaScript.
+A responsive Persian / RTL natural-bodybuilding site with training and nutrition content, a health calculator, and a supporting supplement storefront, built with plain HTML, CSS, and JavaScript.
 
 Open `dist/index.html` in a browser, or run `python3 -m http.server 5173 --directory dist` and visit http://localhost:5173.
 
-Features: product search, protein/flavor/price filters, sorting, sale and popular collections, product dialogs, persistent local cart, and an educational protein guide.
+Features: a content-first homepage with a short training video; an evidence-linked beginner path at `/start/`; published articles; a calorie/protein/BMI calculator; product search, protein/flavor/price filters, sorting, persistent local cart, and a protein guide.
 
 The brand, six products, packaging, nutrition values, and prices are illustrative. Payment and real order submission are not connected. Replace sample catalog data in `dist/app.js` before launch. Fonts use Google Fonts with system fallbacks.
 
-Checks completed: JavaScript syntax, catalog rendering, search, empty state, price filtering, cart quantities/totals, and product dialog logic. HTTP preview returned 200. Visual browser checks were unavailable in this session.
+Checks include Python route/publishing tests, Node catalog/calculator checks, actual Chrome desktop/mobile layouts, video decoding/playback, reduced-motion and data-saving behavior, product search/cart, and local HTTP previews.
 
 A private Sites project is registered in `.openai/hosting.json`, but publication did not complete: both initial and refreshed source credentials were already expired relative to the local clock. No live deployment has been verified.
 
@@ -64,6 +64,20 @@ Validation: `python3 -m unittest discover -s whey-club/tests -v` from the reposi
 ## Color palette and page URLs
 
 The storefront and journal use soothing lime `#DFF478`, silky white `#F7F3E6`, floral blue `#92BAD5`, kawaii blue `#788CE3`, and nautical navy `#17243F`. Navy text and buttons, lime hero sections, and floral/periwinkle panels carry the theme through product illustrations and article pages.
+
+### Natural bodybuilding homepage
+
+`dist/index.html` is the content-first homepage; `/start/` is generated from `content/start.html` and `/about/` from `content/about.html`. The shop catalog and whey guide are preserved in `content/storefront-catalog.html` and `content/whey-guide.html`, so shop generation no longer depends on a catalog being present on the homepage.
+
+`dist/homepage.js` starts the muted, looping training video only when reduced motion and data-saving mode are off. Native playback controls and a poster remain available. The local MP4 is 8 seconds, 960×540 and about 650 KB; attribution and licensing are recorded in `dist/assets/MEDIA-LICENSE.md`. Social links await actual account URLs. No checkout, daily Telegram/Instagram automation or live deployment was enabled. See `docs/iran-launch.md` for the launch experiment and its limits.
+
+### ماشین حساب سلامت
+
+`/health-calculator/` estimates resting energy, maintenance calories and a starting calorie target for losing, maintaining or gaining weight. It also shows resistance-training protein ranges, protein across four meals, and adult BMI. Persian and Arabic numerals are accepted. Calculations run entirely in the browser without storing or submitting personal inputs.
+
+The tool supports ages 20–80, weights 35–250 kg and heights 130–220 cm. It uses Mifflin–St Jeor, approximate activity factors, a 15% deficit or 10% surplus, and 1.6–2.2 g/kg protein for healthy resistance-training adults. Sources and limitations are displayed on the page. It withholds weight-loss targets below BMI 18.5, unusually low calorie targets, and protein estimates at BMI 30 or above. These are product guardrails, not diagnoses or universal safety thresholds. It is unsuitable for pregnancy, breastfeeding and conditions requiring individualized nutrition care.
+
+Page content: `content/health-calculator.html`; behavior and styles: `dist/health-calculator.{js,css}`. Run `python3 scripts/build_storefront.py` after changing the HTML, and rebuild already-published journal pages to update their navigation and sitemap. Run `node tests/test_health_calculator.cjs`, `node tests/test_storefront.cjs` and `python3 -m unittest discover -s tests -v` for regression checks.
 
 Public pages:
 

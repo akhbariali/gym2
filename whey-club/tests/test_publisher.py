@@ -38,6 +38,8 @@ class PublisherTests(unittest.TestCase):
         self.assertEqual(len(self.run_publish(self.now+timedelta(days=300))['published']),100)
         summaries=json.loads((self.output/'blog/articles.json').read_text());self.assertEqual(len(summaries),100)
         article=(self.output/'blog/what-is-whey-protein/index.html').read_text()
+        self.assertIn('href="/health-calculator/"',article)
+        self.assertIn('href="/start/"',article)
         self.assertIn('application/ld+json',article);self.assertIn('rel="canonical"',article)
         self.assertIn('pmc.ncbi.nlm.nih.gov',article);self.assertIn('datePublished',article)
         self.assertIn('/blog/what-is-whey-protein/',(self.output/'sitemap.xml').read_text())

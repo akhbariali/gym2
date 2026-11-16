@@ -30,3 +30,6 @@ input::placeholder{color:var(--muted)}
 .guide,.about-values article{background:var(--periwinkle)}
 .route-heading,.product-description{background:var(--sky)}
 .product-stage{background:radial-gradient(circle,var(--sky),var(--periwinkle))}
+
+header>.head>nav,.blog-header nav{flex-wrap:wrap}
+@media(max-width:720px){header>.head>nav,.blog-header nav{flex-wrap:nowrap;overflow-x:auto}}

@@ -1,0 +1,59 @@
+<div class="breadcrumbs"><a href="/">خانه</a> / <a href="/health-calculator/">ماشین حساب سلامت</a></div>
+<section class="route-heading">
+  <div class="kicker">YOUR NUMBERS. YOUR NEXT STEP.</div>
+  <h1>ماشین حساب سلامت</h1>
+  <p>از عددهای تقریبی شروع کن، با روند واقعی بدنت تنظیم کن. کالری روزانه، پروتئین و شاخص توده بدنت را یک‌جا ببین.</p>
+  <span class="route-sticker">قدم‌های کوچک، پیشرفت طبیعی ✺</span>
+</section>
+<div class="health-layout">
+  <section class="health-panel" aria-labelledby="healthInputTitle">
+    <div class="kicker">01 / ABOUT YOU</div>
+    <h2 id="healthInputTitle">از خودت بگو</h2>
+    <p id="healthScope" class="health-intro">برای بزرگسالان ۲۰ تا ۸۰ سال. این برآورد برای بارداری، شیردهی، اختلال خوردن یا شرایط پزشکی مانند بیماری کلیه و کبد مناسب نیست؛ در این شرایط از متخصص کمک بگیر.</p>
+    <form id="healthForm" aria-describedby="healthScope" novalidate>
+      <div class="health-fields">
+        <label for="healthAge">سن <span>سال</span><input id="healthAge" name="age" type="text" inputmode="numeric" autocomplete="off" placeholder="مثلاً ۳۰" required aria-describedby="healthAgeHint healthError"><small id="healthAgeHint">۲۰ تا ۸۰ سال؛ عدد صحیح</small></label>
+        <label for="healthWeight">وزن فعلی <span>کیلوگرم</span><input id="healthWeight" name="weight" type="text" inputmode="decimal" autocomplete="off" placeholder="مثلاً ۸۰٫۵" required aria-describedby="healthWeightHint healthError"><small id="healthWeightHint">۳۵ تا ۲۵۰ کیلوگرم</small></label>
+        <label for="healthHeight">قد <span>سانتی‌متر</span><input id="healthHeight" name="height" type="text" inputmode="decimal" autocomplete="off" placeholder="مثلاً ۱۸۰" required aria-describedby="healthHeightHint healthError"><small id="healthHeightHint">۱۳۰ تا ۲۲۰ سانتی‌متر</small></label>
+        <label for="healthSex">پارامتر جنسیت معادله<select id="healthSex" name="sex" required aria-describedby="healthSexHint healthError"><option value="">انتخاب کنید</option><option value="female">معادله زنان</option><option value="male">معادله مردان</option></select><small id="healthSexHint">معادله اصلی دو ضریب دارد؛ شرایط فردی یا هورمون‌درمانی می‌تواند دقت آن را تغییر دهد.</small></label>
+        <label class="health-wide" for="healthActivity">فعالیت معمول روزانه<select id="healthActivity" name="activity" required aria-describedby="healthActivityHint healthError"><option value="">انتخاب کنید</option><option value="sedentary">کم‌تحرک: بیشتر روز نشسته، ورزش ناچیز (۱٫۲)</option><option value="light">سبک: تحرک کم و تمرین سبک ۱–۳ روز در هفته (۱٫۳۷۵)</option><option value="moderate">متوسط: تحرک روزانه و تمرین ۳–۵ روز در هفته (۱٫۵۵)</option><option value="active">زیاد: کار بدنی یا تمرین جدی بیشتر روزها (۱٫۷۲۵)</option></select><small id="healthActivityHint">کل روز را در نظر بگیر، نه فقط زمان باشگاه. اگر تردید داری، سطح پایین‌تر نقطه شروع محتاطانه‌تری است.</small></label>
+        <label class="health-wide" for="healthGoal">هدفت چیست؟<select id="healthGoal" name="goal" required aria-describedby="healthError"><option value="maintain">حفظ وزن</option><option value="lose">کاهش وزن</option><option value="gain">افزایش وزن و عضله‌سازی</option></select></label>
+      </div>
+      <p id="healthError" class="health-error" role="alert"></p>
+      <button class="primary" type="submit">محاسبه نیاز روزانه <span aria-hidden="true">↙</span></button>
+      <p class="health-privacy">اطلاعاتت فقط در همین مرورگر محاسبه می‌شود؛ ذخیره یا ارسال نمی‌شود.</p>
+    </form>
+  </section>
+  <section class="health-panel health-method" aria-labelledby="healthMethodTitle">
+    <div class="kicker">02 / UNDERSTAND THE ESTIMATE</div>
+    <h2 id="healthMethodTitle">عددها چه می‌گویند؟</h2>
+    <p>کالری نگهدارنده تخمینی از انرژی لازم برای ثابت ماندن وزن است. این عدد، اندازه‌گیری سوخت‌وساز تو نیست و سطح فعالیت بیشترین عدم قطعیت را دارد.</p>
+    <ol>
+      <li><b>یک شروع ملایم:</b> برای کاهش وزن ۱۵٪ کمتر و برای افزایش وزن ۱۰٪ بیشتر از نگهدارنده در نظر می‌گیریم. این درصدها انتخاب عملی این ابزارند، نه نتیجه قطعی یک مقاله یا نسخه مناسب همه.</li>
+      <li><b>روند را ببین:</b> میانگین وزن صبحگاهی را در شرایط مشابه، همراه با انرژی، گرسنگی و عملکرد تمرین طی ۲ تا ۳ هفته بررسی کن؛ نوسان یک روز را ملاک تغییر غذا قرار نده.</li>
+      <li><b>پروتئین از کل غذا:</b> بازه پیشنهادی برای تمرین مقاومتی است؛ لبنیات، تخم‌مرغ، گوشت، حبوبات و سایر غذاها هم حساب می‌شوند.</li>
+    </ol>
+    <a class="health-source-link" href="#healthReferences">روش محاسبه و منابع علمی ↓</a>
+  </section>
+</div>
+<section id="healthResults" class="health-results" aria-labelledby="healthResultsTitle" tabindex="-1" hidden>
+  <div class="section-heading"><div><div class="kicker">YOUR STARTING POINT</div><h2 id="healthResultsTitle">نقطه شروع تو</h2></div><small>برآورد آموزشی؛ نه نسخه تغذیه یا تضمین تغییر وزن</small></div>
+  <div class="health-result-grid">
+    <article class="health-result health-calorie"><h3>کالری روزانه برای هدفت</h3><strong id="healthCalories"></strong><p id="healthGoalNote"></p><a href="#healthEnergyMethod">روش و منبع محاسبه کالری ↓</a></article>
+    <article class="health-result"><h3>پروتئین روزانه</h3><strong id="healthProtein"></strong><p id="healthProteinNote"></p><a href="#healthProteinMethod">روش و منبع پروتئین ↓</a></article>
+    <article class="health-result"><h3>پروتئین در هر وعده</h3><strong id="healthPerMeal"></strong><p>تقسیم تقریبی پروتئین روزانه بین ۴ وعده؛ ساعت‌بندی دقیق یا مصرف مکمل ضروری نیست.</p><a href="#healthMealMethod">منبع تقسیم وعده‌ها ↓</a></article>
+    <article class="health-result"><h3>شاخص توده بدن (BMI)</h3><strong id="healthBmi"></strong><p>BMI چربی را از عضله جدا نمی‌کند و تشخیص بیماری یا اندازه‌گیری درصد چربی نیست؛ در افراد عضلانی ممکن است گمراه‌کننده باشد.</p><a href="#healthBmiMethod">روش و محدودیت BMI ↓</a></article>
+  </div>
+  <div class="health-energy-summary"><p>انرژی استراحت (REE): <b id="healthResting"></b></p><p>کالری نگهدارنده تخمینی (TDEE): <b id="healthMaintenance"></b></p><p>انرژی استراحت، هدف کالری مصرفی روزانه نیست؛ فعالیت هم انرژی مصرف می‌کند.</p></div>
+</section>
+<section id="healthReferences" class="health-panel health-references" aria-labelledby="healthReferencesTitle">
+  <div class="kicker">THE METHOD &amp; THE EVIDENCE</div>
+  <h2 id="healthReferencesTitle">روش محاسبه و منابع</h2>
+  <article id="healthEnergyMethod"><h3>۱. انرژی استراحت و فعالیت</h3><p>معادله ساده‌شده Mifflin–St Jeor از وزن به کیلوگرم، قد به سانتی‌متر و سن به سال استفاده می‌کند:</p><p><code dir="ltr">REE = 10 × weight + 6.25 × height − 5 × age + s</code></p><p>ضریب <code dir="ltr">s</code> برای معادله مردان ۵ و برای معادله زنان منفی ۱۶۱ است. سپس انرژی استراحت در ضریب تقریبی فعالیت ۱٫۲، ۱٫۳۷۵، ۱٫۵۵ یا ۱٫۷۲۵ ضرب می‌شود. این ضرایب، تخمین‌های رایج این ابزارند و از مقاله Mifflin استخراج نشده‌اند. کالری روزانه به نزدیک‌ترین ۱۰ گرد می‌شود؛ این گرد کردن به معنی دقت واقعی تا ۱۰ کیلوکالری نیست.</p><a href="https://doi.org/10.1093/ajcn/51.2.241" hreflang="en">Mifflin et al., 1990 — معادله پیش‌بینی انرژی استراحت ↗</a></article>
+  <article id="healthProteinMethod"><h3>۲. پروتئین برای تمرین مقاومتی</h3><p>وزن فعلی × ۱٫۶ تا ۲٫۲ گرم در روز. مرور Morton و همکاران، نقطه برآورد میانگین را نزدیک ۱٫۶ گرم به ازای کیلوگرم یافت؛ ۲٫۲ حد بالای فاصله اطمینان آن برآورد است، نه نیاز قطعی همه. بازه ابزار برای بزرگسالان سالم دارای تمرین مقاومتی است و در کاهش وزن شدید، ورزشکار بسیار کم‌چربی یا شرایط پزشکی به ارزیابی فردی نیاز دارد. در BMI برابر یا بیشتر از ۳۰، از نمایش عدد خودکار پروتئین خودداری می‌کنیم چون کل وزن ممکن است مبنای مناسبی نباشد.</p><a href="https://doi.org/10.1136/bjsports-2017-097608" hreflang="en">Morton et al., 2018 — مرور نظام‌مند و فراتحلیل پروتئین و تمرین مقاومتی ↗</a></article>
+  <article id="healthMealMethod"><h3>۳. تقسیم پروتئین بین وعده‌ها</h3><p>بازه روزانه را بر ۴ تقسیم می‌کنیم و به گرم گرد می‌کنیم. این فقط یک الگوی ساده برای پخش دریافت است؛ اولویت با مجموع روزانه و امکان اجرای برنامه است.</p><a href="https://doi.org/10.1186/s12970-018-0215-1" hreflang="en">Schoenfeld &amp; Aragon, 2018 — پروتئین هر وعده و توزیع در روز ↗</a></article>
+  <article id="healthBmiMethod"><h3>۴. شاخص توده بدن</h3><p><code dir="ltr">BMI = weight (kg) / height (m)²</code></p><p>طبقه‌بندی بزرگسالان: کمتر از ۱۸٫۵ کم‌وزنی؛ از ۱۸٫۵ تا کمتر از ۲۵ محدوده معمول؛ از ۲۵ تا کمتر از ۳۰ اضافه‌وزن؛ ۳۰ و بالاتر محدوده چاقی. طبقه‌بندی از عدد گردنشده انجام می‌شود؛ BMI نمایشی ممکن است در مرزها گرد شود. ترکیب بدن، دور کمر، پیشینه و شرایط فردی در ارزیابی سلامت اهمیت دارند.</p><a href="https://www.cdc.gov/bmi/adult-calculator/bmi-categories.html" hreflang="en">CDC — دسته‌بندی BMI بزرگسالان و محدودیت‌های تفسیر ↗</a></article>
+  <p class="health-privacy">این صفحه ابزار آموزشی است و بازبینی بالینی فردی انجام نمی‌دهد. برای نسخه غذایی، علائم غیرعادی یا شرایط پزشکی، ارزیابی متخصص لازم است.</p>
+</section>
+<noscript><p class="health-error">برای محاسبه، جاوااسکریپت مرورگر را فعال کنید. روش‌ها و منابع بدون جاوااسکریپت هم قابل مطالعه‌اند.</p></noscript>
+<script src="/health-calculator.js" defer></script>
