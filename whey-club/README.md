@@ -61,9 +61,9 @@ Local journal preview: run `python3 scripts/publish_articles.py --source content
 
 Validation: `python3 -m unittest discover -s whey-club/tests -v` from the repository root. Tests cover all 100 rendered pages, the 48-hour boundary, idempotency, clock rollback, downtime, queue exhaustion, rebuilds, HTML escaping, and future article privacy. The storefront remains a demo catalog with checkout disabled.
 
-## Warm theme and page URLs
+## Color palette and page URLs
 
-The storefront uses warm cream/peach/orange surfaces and accents, dark brown text, and a more energetic hero and journal treatment.
+The storefront and journal use the Celadon reference palette: cobalt blue `#003F91`, mint `#B9FFC2`, sky blue `#A9DEF9`, and sage `#A0CBA6`. White provides a neutral reading background. Cobalt text and buttons, mint hero sections, and sky/sage panels carry the theme through product illustrations and article pages.
 
 Public pages:
 
