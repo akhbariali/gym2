@@ -1,10 +1,10 @@
 # WHEY CLUB
 
-A responsive Persian / RTL natural-bodybuilding site with training and nutrition content, a health calculator, and a supporting supplement storefront, built with plain HTML, CSS, and JavaScript.
+A responsive Persian / RTL supplement storefront focused on natural bodybuilding, with a supporting health calculator and training and nutrition guides, built with plain HTML, CSS, and JavaScript.
 
 Open `dist/index.html` in a browser, or run `python3 -m http.server 5173 --directory dist` and visit http://localhost:5173.
 
-Features: a content-first homepage with an optimized, user-provided training photo; an evidence-linked beginner path at `/start/`; published articles; a calorie/protein/BMI calculator; product search, protein/flavor/price filters, sorting, persistent local cart, and a protein guide.
+Features: a shop-first homepage with an optimized, user-provided training photo; an evidence-linked beginner path at `/start/`; published articles; a calorie/protein/BMI calculator; product search, protein/flavor/price filters, sorting, persistent local cart, and a protein guide.
 
 The brand, six products, packaging, nutrition values, and prices are illustrative. Payment and real order submission are not connected. Replace sample catalog data in `dist/app.js` before launch. Fonts use Google Fonts with system fallbacks.
 
@@ -67,7 +67,7 @@ The storefront and journal use soothing lime `#DFF478`, silky white `#F7F3E6`, f
 
 ### Natural bodybuilding homepage
 
-`dist/index.html` is the content-first homepage; `/start/` is generated from `content/start.html` and `/about/` from `content/about.html`. The shop catalog and whey guide are preserved in `content/storefront-catalog.html` and `content/whey-guide.html`, so shop generation no longer depends on a catalog being present on the homepage.
+`dist/index.html` is the shop-first homepage; `/start/` is generated from `content/start.html` and `/about/` from `content/about.html`. The shop catalog and whey guide are preserved in `content/storefront-catalog.html` and `content/whey-guide.html`, so shop generation no longer depends on a catalog being present on the homepage.
 
 The homepage uses an optimized WebP copy of the user-provided battle-rope photo (`karsten-winegeart-0Wra5YYVQJE-unsplash.jpg`). The image spans the page directly below the header; desktop text sits on the left, while mobile text sits below the full image. The original photo remains unchanged outside the public site. Social links await actual account URLs. No checkout, daily Telegram/Instagram automation or live deployment was enabled. See `docs/iran-launch.md` for the launch experiment and its limits.
 

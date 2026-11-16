@@ -65,6 +65,12 @@ class StorefrontTests(unittest.TestCase):
             self.assertLess((ROOT/'dist/assets/training.webp').stat().st_size,500_000)
             self.assertIn('/start/',parser.links)
             self.assertIn('/shop/',parser.links)
+            self.assertLess(home.index('id="supplementTitle"'),home.index('class="health-teaser"'))
+            self.assertLess(home.index('href="/shop/"'),home.index('href="/start/"'))
+            hero=home.split('class="natural-actions"',1)[1].split('</div>',1)[0]
+            self.assertIn('class="primary" href="/shop/"',hero)
+            self.assertNotIn('href="/start/"',hero)
+
             self.assertNotIn('id="products"',home)
             starter=Links();starter.feed((dest/'start/index.html').read_text())
             for anchor in ['build-muscle','lose-fat','get-consistent']:
