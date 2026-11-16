@@ -94,3 +94,7 @@ Original `fa-fitness-*` article IDs are retained in the private queue/state for 
 Catalog source: `content/products.json`. Build store routes and browser catalog data with `python3 scripts/build_storefront.py --origin http://94.184.25.127:8088` from `whey-club/`, then run the article publisher with `--rebuild` to refresh the sitemap and already-published articles. Root-relative links/assets work on direct visits and reloads of nested URLs. Product pages include canonical tags, product metadata, breadcrumbs, and HTML product details; catalog category links are also present in static HTML. Existing local cart IDs are preserved.
 
 Routing/cart regression tests: `node whey-club/tests/test_storefront.cjs` from the repository root.
+
+### Premium lime variant
+
+Branch `theme/lime-premium` refines the Soothing Lime theme with warm product surfaces, fine borders, generous spacing and soft shadows. CSS adds a single hero entrance and gentle pointer hover effects. Reduced-motion preferences disable the animations, movement and smooth scrolling; no animation dependency or script is required.

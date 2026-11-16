@@ -33,3 +33,18 @@ input::placeholder{color:var(--muted)}
 
 header>.head>nav,.blog-header nav{flex-wrap:wrap}
 @media(max-width:720px){header>.head>nav,.blog-header nav{flex-wrap:nowrap;overflow-x:auto}}
+
+/* Premium lime: quiet surfaces and tactile controls. */
+header{background:#f7f3e6;border-bottom:1px solid #17243f14}
+header nav>a{position:relative;padding-block:7px}
+header nav>a::after{content:'';position:absolute;inset-inline:0;bottom:0;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .25s ease}
+header nav>a:hover::after,header nav>a:focus-visible::after{transform:scaleX(1)}
+.primary{border-radius:8px;box-shadow:0 5px 16px #17243f12;transition:transform .25s ease,box-shadow .25s ease}
+.primary:hover{transform:translateY(-2px);box-shadow:0 9px 22px #17243f20}
+.product-stage,.shop-category-card{border:1px solid #17243f18;background:radial-gradient(ellipse at 50% 40%,#ffffffa6,transparent 70%),#efeddf}
+.product-description,.route-heading{background:#f1efe3;border:1px solid #17243f18}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}
+ header nav>a::after,.primary{transition:none}
+ .primary:hover{transform:none}
+}

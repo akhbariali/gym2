@@ -90,3 +90,49 @@
 }
 
 @media(prefers-reduced-motion:reduce){.natural-actions .primary{transition:none;transform:none}}
+
+/* More breathing room lets the photography and products lead. */
+.natural-hero-copy{background:linear-gradient(135deg,#17243ff5,#17243fe8);border-color:#f7f3e640;border-radius:18px;box-shadow:0 24px 60px #00010330;backdrop-filter:blur(10px)}
+.natural-kicker{letter-spacing:2.4px}
+.natural-hero h1 em{background:transparent;color:var(--accent);padding:0}
+.natural-hero-copy>p{color:#f7f3e6d9}
+.natural-principles{border-color:#17243f20;padding-block:27px}
+.natural-section{margin-top:88px}
+.natural-home .section-heading{margin-bottom:26px}
+.goal-card,.goal-card:nth-child(2),.goal-card:nth-child(3){background:#faf8ef;color:var(--ink);border:1px solid #17243f20;border-radius:16px;box-shadow:0 5px 18px #17243f04;transition:transform .3s ease,box-shadow .3s ease}
+.goal-index{color:#17243fbf}
+.goal-symbol{color:var(--ink);border-bottom:2px solid var(--accent);width:48px}
+.goal-card:nth-child(2) .goal-symbol{border-color:var(--sky)}
+.goal-card:nth-child(3) .goal-symbol{border-color:var(--periwinkle)}
+.supplement-picks>a{padding:20px 20px 27px;background:#faf8ef;border-color:#17243f1c;border-radius:18px;box-shadow:0 5px 18px #17243f04;transition:transform .3s ease,box-shadow .3s ease}
+.supplement-picks a>div{padding:35px 18px;background:radial-gradient(ellipse at 50% 35%,#ffffffbf,transparent 70%),#eeecdf;border-radius:12px}
+.supplement-picks img{filter:drop-shadow(0 16px 12px #17243f20);transition:transform .45s ease}
+.supplement-picks h3{margin-top:12px}
+.supplement-picks a>p{font-weight:700;font-size:15px}
+.supplement-picks b{border-top:1px solid #17243f18;padding-top:18px}
+.natural-home .health-teaser{background:#efeee2;border:1px solid #17243f20;border-radius:18px;padding:38px}
+.natural-closing{background:var(--ink);color:#f7f3e6;border:1px solid #f7f3e633;border-radius:20px;padding-block:56px}
+.natural-closing .primary{background:var(--accent);color:var(--ink)}
+.natural-closing .primary>span{color:var(--ink)}
+@media(hover:hover) and (pointer:fine){
+ .goal-card:hover,.supplement-picks>a:hover{transform:translateY(-5px);box-shadow:0 16px 32px #17243f10}
+ .supplement-picks>a:hover img{transform:translateY(-5px) rotate(-2deg)}
+}
+@media(prefers-reduced-motion:no-preference){
+ .natural-hero-copy{animation:premium-enter .7s cubic-bezier(.2,.7,.3,1) both}
+ @keyframes premium-enter{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+}
+@media(max-width:900px){
+ .natural-hero-copy{background:transparent;box-shadow:none;backdrop-filter:none;border:0}
+ .natural-hero h1 em{color:var(--ink);text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:6px;text-underline-offset:7px}
+ .natural-hero-copy>p{color:var(--ink)}
+}
+@media(max-width:720px){
+ .natural-section{margin-top:48px}
+ .natural-home .health-teaser{padding:24px}
+ .natural-principles{padding-block:20px}
+}
+@media(prefers-reduced-motion:reduce){
+ .goal-card,.supplement-picks>a,.supplement-picks img{transition:none}
+ .goal-card:hover,.supplement-picks>a:hover,.supplement-picks>a:hover img{transform:none}
+}
