@@ -63,7 +63,7 @@ Validation: `python3 -m unittest discover -s whey-club/tests -v` from the reposi
 
 ## Color palette and page URLs
 
-The storefront and journal use soothing lime `#DFF478`, silky white `#F7F3E6`, floral blue `#92BAD5`, kawaii blue `#788CE3`, and nautical navy `#17243F`. Navy text and buttons, lime hero sections, and floral/periwinkle panels carry the theme through product illustrations and article pages.
+The storefront and journal use sage green `#719A73`, evergreen `#003A35`, ink black `#001F27`, and bright marine `#1F73C2`, with off-white reading surfaces. Sage highlights, evergreen feature panels and marine buttons carry the palette through the homepage, calculator, shop and journal.
 
 ### Natural bodybuilding homepage
 

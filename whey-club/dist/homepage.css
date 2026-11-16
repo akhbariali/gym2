@@ -20,8 +20,8 @@
 .natural-home #latestArticles>.editorial-card:only-child .editorial-art{height:100%;min-height:220px}
 .goal-grid,.foundation-grid,.supplement-picks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
 .goal-card{padding:26px;border-radius:13px;background:var(--accent);position:relative;transition:transform .2s;min-width:0}
-.goal-card:nth-child(2){background:var(--sky)}
-.goal-card:nth-child(3){background:var(--ink);color:#f7f3e6}
+.goal-card:nth-child(2){background:var(--soft)}
+.goal-card:nth-child(3){background:var(--ink);color:#fffffa}
 .goal-card:hover{transform:translateY(-4px)}
 .goal-index{font:12px 'Barlow Condensed';letter-spacing:1.7px;display:block;direction:ltr;text-align:right}
 .goal-symbol{font-size:45px;display:block;margin-top:14px}
@@ -41,7 +41,7 @@
 .supplement-picks img{height:195px;width:150px;object-fit:contain}
 .supplement-picks a>span{font-size:10px}
 .supplement-picks h3{font-size:16px;line-height:1.9}
-.supplement-picks .supplement-guide{background:var(--periwinkle);border:0;display:flex;flex-direction:column;justify-content:center}
+.supplement-picks .supplement-guide{background:var(--sage);border:0;display:flex;flex-direction:column;justify-content:center}
 .supplement-guide h3{font-size:26px;line-height:1.9}
 .supplement-guide p,.natural-demo-note{font-size:11px;line-height:2.2}
 .natural-demo-note{margin-top:20px}
@@ -58,7 +58,7 @@
 .starter-content ul,.starter-content ol{padding-inline-start:24px}
 .starter-callout{background:var(--accent);padding:22px;border-radius:10px;margin:20px 0}
 .starter-links{display:flex;gap:12px;flex-wrap:wrap;margin:25px 0}
-.starter-links a{background:var(--sky);padding:10px 15px;border-radius:6px;font-size:12px}
+.starter-links a{background:var(--soft);padding:10px 15px;border-radius:6px;font-size:12px}
 @media(max-width:1000px){.natural-home .head{gap:20px}.natural-home .head>nav{gap:15px;font-size:11px}.natural-actions{gap:18px}.goal-card{padding:22px}.natural-section-note{max-width:250px}.natural-home .health-teaser{align-items:start;flex-direction:column}}
 @media(max-width:720px){.natural-home .head>nav{order:3;width:100%;flex-basis:100%;height:32px;flex-wrap:nowrap;overflow-x:auto;gap:22px;font-size:10px}.natural-home .head{gap:12px}.natural-hero{padding:25px 0 30px}.natural-hero h1{font-size:47px;line-height:1.7}.natural-hero-copy>p{font-size:13px}.natural-kicker{font-size:11px}.natural-hero-foot{gap:16px;font-size:9px}.natural-principles{grid-template-columns:1fr 1fr;padding:18px 0;gap:20px 10px;font-size:10px}.natural-principles>span{justify-content:flex-start;gap:10px}.natural-section{margin-top:40px}.goal-grid,.foundation-grid,.supplement-picks{grid-template-columns:1fr;gap:16px}.goal-card p{min-height:0}.goal-card{padding:25px}.goal-symbol{position:absolute;left:25px;top:20px}.goal-card h3{margin-top:35px}.natural-section-note{max-width:none;display:block;margin-top:10px}.natural-home .health-teaser{padding:24px;margin-top:35px;gap:10px}.natural-home .health-teaser h2{font-size:22px}.natural-home .section-heading{align-items:start;gap:14px}.natural-home .home-journal .section-heading{display:block}.natural-home .home-journal .section-heading>a{display:inline-block;margin-top:12px}.foundation-grid>a{padding:20px 0 10px}.foundation-grid h3{margin-bottom:7px}.natural-closing{padding:30px 22px;margin-top:35px}.natural-closing h2{font-size:24px}.natural-closing p{font-size:12px}.starter-content h2{font-size:23px}.starter-content p,.starter-content li{font-size:13px}}
 @media(prefers-reduced-motion:reduce){.goal-card{transition:none}.goal-card:hover{transform:none}}
@@ -68,3 +68,5 @@
 .training-panel video{display:block;width:100%;aspect-ratio:16/9;object-fit:contain;border-radius:10px;background:var(--ink)}
 .training-panel figcaption{padding:12px 9px 5px;font-size:11px;font-weight:700}
 @media(max-width:720px){.natural-hero{grid-template-columns:1fr;gap:25px;text-align:center}.natural-kicker,.natural-actions,.natural-hero-foot{justify-content:center}}
+
+.goal-card:nth-child(3),.supplement-picks .supplement-guide{background:var(--evergreen);color:#fffffa}
