@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import Account from './Account.jsx';
+import site from '../../content/site.json';
 // Preserve the existing page markup while React owns rendering and API loading.
 const pages = import.meta.glob('./pages/**/index.html', {query:'?raw',import:'default'});
 function Storefront(){
@@ -11,10 +12,11 @@ function Storefront(){
   if(!pages[key])throw new Error('صفحه پیدا نشد');
   const response=await fetch('/api/products/');if(!response.ok)throw new Error('ارتباط با فروشگاه برقرار نشد');
   const data=await response.json();window.WHEY_PRODUCTS=data.results;
+  window.WHEY_SITE=site;
   const doc=new DOMParser().parseFromString(await pages[key](),'text/html');
   const cartLink=doc.querySelector('.cart-button');if(cartLink)cartLink.insertAdjacentHTML('beforebegin','<a class="account-link" href="/account/">ورود / حساب من</a>');
   document.title=doc.title;document.body.className=doc.body.className;
-  window.__wheyPageScripts=[...doc.querySelectorAll('script')].filter(s=>s.type!=='application/ld+json'&&!s.src.endsWith('/catalog.js')).map(s=>({src:s.getAttribute('src'),text:s.textContent}));
+  window.__wheyPageScripts=[...doc.querySelectorAll('script')].filter(s=>s.type!=='application/ld+json'&&!new URL(s.src,location.origin).pathname.endsWith('/catalog.js')).map(s=>({src:s.getAttribute('src'),text:s.textContent}));
   doc.querySelectorAll('link[rel="stylesheet"]').forEach(link=>{const href=link.getAttribute('href');if(!document.querySelector(`link[href="${href}"]`)){const el=document.createElement('link');el.rel='stylesheet';el.href=href;document.head.append(el)}});
   doc.querySelectorAll('script').forEach(s=>s.remove());
   if(active)setPage(doc.body.innerHTML);

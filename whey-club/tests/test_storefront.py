@@ -23,8 +23,10 @@ class StorefrontTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             dest=Path(d);shutil.copy(ROOT/'dist/index.html',dest/'index.html')
             routes=builder.build(dest,'https://example.test');products=json.loads((ROOT/'content/products.json').read_text())
-            self.assertEqual(len(routes),16)
+            self.assertEqual(len(routes),20)
             self.assertIn('/health-calculator/',routes)
+            self.assertIn('/kits/',routes)
+            self.assertIn('/coaches/',routes)
             for path in routes+['/cart/']:
                 page=(dest/path.lstrip('/')/'index.html').read_text()
                 self.assertIn('href="https://example.test'+path+'"',page)

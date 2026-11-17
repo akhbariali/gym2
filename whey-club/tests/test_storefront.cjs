@@ -5,7 +5,7 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const products = JSON.parse(fs.readFileSync(path.join(root, 'content/products.json')));
 const source = fs.readFileSync(path.join(root, 'dist/app.js'), 'utf8');
-function setup(initialType = '', catalog = true, saved = {}) {
+function setup(initialType = '', catalog = true, saved = {}, script = source) {
  const elements = {};
  for (const key of ['#cartCount', '#cartItems', '#cartSummary', '#toast', ...(catalog ? ['#grid', '#products', '#search', '#price', '#sort', '#priceValue', '#resultCount', '#empty', '#reset', '#emptyReset'] : [])]) {
   elements[key] = { value: key === '#price' ? '4000000' : key === '#sort' ? 'featured' : '', dataset: key === '#products' ? { initialType } : {}, innerHTML: '', textContent: '', classList: { add() {}, remove() {}, toggle() {} }, addEventListener() {} };
@@ -25,7 +25,7 @@ function setup(initialType = '', catalog = true, saved = {}) {
   addEventListener() {}
  };
  const context = vm.createContext({window:{WHEY_PRODUCTS:products},document,localStorage:{getItem:()=>JSON.stringify(storage.value),setItem:(key,value)=>{storage.value=JSON.parse(value)}},setTimeout:()=>1,clearTimeout(){}});
- vm.runInContext(source, context);
+ vm.runInContext(script, context);
  return {elements,context,inputs,storage};
 }
 let env = setup('isolate');
@@ -35,6 +35,7 @@ assert(env.inputs.every(i=>i.disabled));
 vm.runInContext('reset()', env.context);
 assert.equal((env.elements['#grid'].innerHTML.match(/class="card"/g)||[]).length,3);
 env = setup();
+assert.equal((env.elements['#grid'].innerHTML.match(/class="card"/g)||[]).length,6);
 env.elements['#search'].value='توت';vm.runInContext('render()',env.context);
 assert.equal((env.elements['#grid'].innerHTML.match(/class="card"/g)||[]).length,1);
 env.elements['#search'].value='no result';vm.runInContext('render()',env.context);assert.equal(env.elements['#empty'].hidden,false);
@@ -42,8 +43,25 @@ vm.runInContext('reset();add(1);add(1);add(2)',env.context);
 assert.equal(env.elements['#cartCount'].textContent,'۳');
 assert(env.elements['#cartSummary'].innerHTML.includes((7570000).toLocaleString('fa-IR')));
 assert.equal(env.storage.value[1],2);
+assert.equal(env.elements['#toast'].textContent,'به سبد خریدت اضافه شد ✓');
 env = setup('', false, {1:2});
 assert.equal(env.elements['#cartCount'].textContent,'۲');
 vm.runInContext('add(2);add(999)',env.context);
 assert.equal(env.elements['#cartCount'].textContent,'۳');
 console.log('Passed: category routing, reset, product links, search, empty state, cart totals, cross-page persistence, product-page initialization.');
+
+env = setup('', false);
+vm.runInContext('addKit([4,7,8,999])',env.context);
+assert.equal(env.elements['#cartCount'].textContent,'۳');
+assert.deepEqual(env.storage.value,{4:1,7:1,8:1});
+assert.equal(env.elements['#toast'].textContent,'کل کیت به سبدت اضافه شد ✓');
+const frontendSource=fs.readFileSync(path.join(root,'frontend/public/app.js'),'utf8');
+assert(frontendSource.includes('href="/checkout/"'));
+assert(frontendSource.includes("fetch('/api/articles/'"));
+assert(!fs.readFileSync(path.join(root,'dist/index.html'),'utf8').includes('<video'));
+
+env=setup('',false,{},frontendSource);
+vm.runInContext('addKit([4,7,8])',env.context);
+assert.equal(env.elements['#cartCount'].textContent,'۳');
+assert(env.elements['#cartSummary'].innerHTML.includes('href="/checkout/"'));
+console.log('Passed: kit cart additions, unknown IDs, React checkout link, and still-image hero.');
