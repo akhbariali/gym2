@@ -44,7 +44,7 @@ def chrome(site):
             '<div><h2>وی کلاب</h2><a href="/about/">درباره ما</a><a href="/coaches/">همکاری مربیان</a>'
             f'<a href="tel:{esc(site["phoneHref"])}">تلفن: <bdi>{esc(site["phone"])}</bdi>{sample}</a><span>{esc(site["hours"])}</span><span>{esc(site["address"])}</span></div>'
             '</div><div class="wrap footer-trust">'
-            '<div class="badge-slot" aria-label="جای نماد اعتماد الکترونیکی"><b>اینماد</b><span>جای نماد اعتماد</span></div>'
+            '<div class="badge-slot" aria-label="جای نماد اعتماد الکترونیکی"><meta name="enamad" content="48512357" /><b>اینماد</b><span>جای نماد اعتماد</span></div>'
             '<div class="badge-slot"><b>شاپرک</b><span>پرداخت امن بانکی</span></div>'
             '<div class="badge-slot"><b>TTAC</b><span>اصالت قابل استعلام</span></div>'
             '<p>© ۱۴۰۵ وی کلاب · نسخه نمایشی؛ پرداخت آنلاین هنوز فعال نیست. مطالب آموزشی‌اند و جایگزین مشاوره فردی متخصص نیستند.</p>'
