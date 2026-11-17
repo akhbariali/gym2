@@ -1,5 +1,8 @@
 # WHEY CLUB
 
+The `develop` branch now separates the application into `frontend/` (React/Vite) and `backend/` (Django API). See [ARCHITECTURE.md](ARCHITECTURE.md) for development, production configuration, and the retained template migration layer. The deployment on port 8088 serves the React build and proxies `/api/` to the dedicated Django service on loopback port 8089.
+
+
 A responsive Persian / RTL supplement storefront focused on natural bodybuilding, with a supporting health calculator and training and nutrition guides, built with plain HTML, CSS, and JavaScript.
 
 Open `dist/index.html` in a browser, or run `python3 -m http.server 5173 --directory dist` and visit http://localhost:5173.

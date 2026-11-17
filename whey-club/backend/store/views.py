@@ -11,7 +11,7 @@ def published():
         return []
     state = json.loads(settings.PUBLICATION_STATE.read_text())
     dates = {p['slug']: p['published_at'] for p in state['published']}
-    return [dict(a, published_at=dates[a['slug']]) for a in load('articles.json') if a['slug'] in dates]
+    return sorted([dict(a, published_at=dates[a['slug']]) for a in load('articles.json') if a['slug'] in dates], key=lambda a: a['published_at'], reverse=True)
 
 @require_GET
 def products(request):

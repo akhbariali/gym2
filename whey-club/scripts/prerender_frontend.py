@@ -10,5 +10,5 @@ for source in (root/'dist').rglob('index.html'):
     if 'blog' in source.relative_to(root/'dist').parts:continue
     text=source.read_text()
     text=re.sub(r'<script\b[^>]*>.*?</script>','',text,flags=re.S)
-    text=text.replace('<body>','<body><div id="root">').replace('</body>','</div><script type="module" src="'+entry+'"></script></body>')
+    text=re.sub(r'(<body\b[^>]*>)',r'\1<div id="root">',text).replace('</body>','</div><script type="module" src="'+entry+'"></script></body>')
     target=build/source.relative_to(root/'dist');target.parent.mkdir(parents=True,exist_ok=True);target.write_text(text)
