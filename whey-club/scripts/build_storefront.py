@@ -66,4 +66,4 @@ def build(output,origin):
     return routes
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--output',default=str(ROOT/'dist'));parser.add_argument('--origin',default='http://94.184.25.127:8088');args=parser.parse_args();build(args.output,args.origin)
+    parser=argparse.ArgumentParser();parser.add_argument('--output',default=str(ROOT/'dist'));parser.add_argument('--origin',default='http://45.149.78.179');args=parser.parse_args();build(args.output,args.origin)

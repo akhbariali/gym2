@@ -1,5 +1,5 @@
 [Unit]
-Description=WHEY CLUB isolated static storefront on port 8088
+Description=WHEY CLUB isolated static storefront on port 80
 After=network.target
 
 [Service]
@@ -20,7 +20,8 @@ ProtectKernelTunables=yes
 ProtectKernelModules=yes
 ProtectControlGroups=yes
 RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
-CapabilityBoundingSet=
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+AmbientCapabilities=CAP_NET_BIND_SERVICE
 MemoryMax=64M
 CPUQuota=20%
 TasksMax=16

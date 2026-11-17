@@ -1,6 +1,6 @@
 # WHEY CLUB
 
-The `develop` branch now separates the application into `frontend/` (React/Vite) and `backend/` (Django API). See [ARCHITECTURE.md](ARCHITECTURE.md) for development, production configuration, and the retained template migration layer. The deployment on port 8088 serves the React build and proxies `/api/` to the dedicated Django service on loopback port 8089.
+The `develop` branch now separates the application into `frontend/` (React/Vite) and `backend/` (Django API). See [ARCHITECTURE.md](ARCHITECTURE.md) for development, production configuration, and the retained template migration layer. The deployment on port 80 serves the React build and proxies `/api/` to the dedicated Django service on loopback port 8089.
 
 
 A responsive Persian / RTL supplement storefront focused on natural bodybuilding, with a supporting health calculator and training and nutrition guides, built with plain HTML, CSS, and JavaScript.
@@ -17,13 +17,13 @@ A private Sites project is registered in `.openai/hosting.json`, but publication
 
 ## Independent server deployment
 
-A Dockerfile serves only the static storefront using unprivileged Nginx on container port 8080. Build from this directory with `docker build -t whey-club:local .`.
+A Dockerfile serves only the static storefront using unprivileged Nginx on container port 808080. Build from this directory with `docker build -t whey-club:local .`.
 
 Before deployment, inspect listening ports, running containers, available resources, and firewall rules. Choose an unused host port and a unique container name. Do not modify existing reverse proxy configuration or restart existing services. The server deployment uses a separate Nginx process instead of Docker to minimize memory use; see below.
 
 ## Server service
 
-Deployment target: `http://94.184.25.127:8088`. Static files live in `/opt/whey-club/site`; configuration is `/opt/whey-club/nginx.conf`. `deploy/` contains the standalone configuration and systemd unit. The existing Nginx service, proxy configurations, applications, and firewall rules are not modified.
+Deployment target: `http://45.149.78.179`. Static files live in `/opt/whey-club/site`; configuration is `/opt/whey-club/nginx.conf`. `deploy/` contains the standalone configuration and systemd unit. The existing Nginx service, proxy configurations, applications, and firewall rules are not modified.
 
 Static files are owned by `root:root` with world-readable files/directories; this lets the capability-restricted publisher write them while the unprivileged web service can only read them.
 
@@ -33,7 +33,7 @@ For updates, upload the contents of `dist/` into `/opt/whey-club/site/`; static 
 
 ## Persian journal and automatic publishing
 
-The supplied 100-article package is imported into `content/articles.json`. Public journal: `http://94.184.25.127:8088/blog/`. Each article has a static HTML URL, unique title/meta description, canonical URL, Article structured data, sources, table of contents, publication date, related published articles, and a shop link. The journal supports Persian search/category filters; the homepage shows up to three published articles. No medical reviewer is invented; articles disclose that they were AI-assisted and not medically reviewed.
+The supplied 100-article package is imported into `content/articles.json`. Public journal: `http://45.149.78.179/blog/`. Each article has a static HTML URL, unique title/meta description, canonical URL, Article structured data, sources, table of contents, publication date, related published articles, and a shop link. The journal supports Persian search/category filters; the homepage shows up to three published articles. No medical reviewer is invented; articles disclose that they were AI-assisted and not medically reviewed.
 
 `publish_articles.py` uses only Python's standard library. The first run publishes article 1 immediately. Each subsequent article becomes eligible 48 hours after the preceding actual publication. A persistent systemd timer checks every five minutes, so publication can be up to five minutes after the interval. Missed intervals do not cause bulk publishing: after downtime it publishes at most one article, then waits another 48 hours. After article 100 it stops adding articles. A lock prevents concurrent publications, atomic file writes protect pages, and publication history persists across restarts and content deployments.
 
@@ -55,7 +55,7 @@ python3 /opt/whey-club/publisher/scripts/publish_articles.py \
   --source /opt/whey-club/publisher/content/articles.json \
   --output /opt/whey-club/site \
   --state-dir /var/lib/whey-club-publisher \
-  --origin http://94.184.25.127:8088 --rebuild
+  --origin http://45.149.78.179 --rebuild
 ```
 
 The same origin is configured in the publisher service; update it when a real domain is attached, then rebuild. Never put the full queue/ZIP in `site/`, and do not synchronize the static files with a delete option that erases generated articles. Source `status: draft` is retained from the original package; the persistent publication history is authoritative for the authorized automatic release schedule.
@@ -94,7 +94,7 @@ Public pages:
 
 Original `fa-fitness-*` article IDs are retained in the private queue/state for scheduling. `url_slug` is used only for the public URL; the dedicated storefront Nginx configuration issues 301 redirects from the original article addresses. The publisher does not reset dates when URLs change. Sitemap entries include shop/product/guide/about routes and only published journal pages. Cart is marked noindex. Unknown URLs return 404.
 
-Catalog source: `content/products.json`. Build store routes and browser catalog data with `python3 scripts/build_storefront.py --origin http://94.184.25.127:8088` from `whey-club/`, then run the article publisher with `--rebuild` to refresh the sitemap and already-published articles. Root-relative links/assets work on direct visits and reloads of nested URLs. Product pages include canonical tags, product metadata, breadcrumbs, and HTML product details; catalog category links are also present in static HTML. Existing local cart IDs are preserved.
+Catalog source: `content/products.json`. Build store routes and browser catalog data with `python3 scripts/build_storefront.py --origin http://45.149.78.179` from `whey-club/`, then run the article publisher with `--rebuild` to refresh the sitemap and already-published articles. Root-relative links/assets work on direct visits and reloads of nested URLs. Product pages include canonical tags, product metadata, breadcrumbs, and HTML product details; catalog category links are also present in static HTML. Existing local cart IDs are preserved.
 
 Routing/cart regression tests: `node whey-club/tests/test_storefront.cjs` from the repository root.
 
