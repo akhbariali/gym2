@@ -1,0 +1,40 @@
+.health-layout{display:grid;grid-template-columns:1.25fr 1fr;gap:24px;align-items:start}
+.health-panel{padding:28px;border:1px solid var(--line);border-radius:15px;min-width:0}
+.health-panel h2{font-size:23px;margin-bottom:16px}
+.health-intro,.health-method p,.health-method li{font-size:12px;line-height:2.2;color:var(--muted)}
+.health-method{background:var(--accent)}
+.health-method ol{padding-inline-start:22px}
+.health-method li{margin-bottom:14px}
+.health-source-link{display:inline-block;font-size:12px;text-decoration:underline;text-underline-offset:4px}
+.health-fields{display:grid;grid-template-columns:1fr 1fr;gap:20px 16px;margin-top:24px}
+.health-fields label{display:flex;flex-direction:column;gap:7px;font-size:12px;font-weight:700;min-width:0}
+.health-fields label>span{font-size:10px;font-weight:400}
+.health-fields input,.health-fields select{display:block;width:100%;min-width:0;max-width:none;min-height:45px;border:1px solid var(--muted);border-radius:7px;background:#f7f3e6;padding:10px 12px;font-size:12px;margin:0}
+.health-fields input{direction:rtl}
+.health-fields small{font-size:10px;font-weight:400;line-height:1.9;color:var(--muted)}
+.health-wide{grid-column:1/-1}
+.health-error{font-size:12px;line-height:2;min-height:1em;font-weight:700}
+.health-fields [aria-invalid=true]{outline:2px solid var(--ink);outline-offset:2px}
+.health-privacy{font-size:10px;line-height:2;color:var(--muted);margin-top:16px}
+.health-results{margin-top:35px;scroll-margin-top:24px;border-radius:12px}
+.health-results:focus-visible{outline:2px solid var(--ink);outline-offset:8px}
+.health-result-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.health-result{background:var(--sky);padding:25px;border-radius:12px;min-width:0}
+.health-result.health-calorie{background:var(--accent)}
+.health-result h3{font-size:13px;margin:0 0 14px}
+.health-result strong{display:block;font-size:24px;line-height:1.7;overflow-wrap:anywhere}
+.health-result p,.health-energy-summary{font-size:12px;line-height:2.2}
+.health-result a{font-size:11px;text-decoration:underline;text-underline-offset:4px}
+.health-energy-summary{padding:12px 0}
+.health-energy-summary p{margin:7px 0}
+.health-references{margin-top:30px}
+.health-references article{padding:14px 0;border-top:1px solid var(--line);scroll-margin-top:24px}
+.health-references h3{font-size:14px}
+.health-references p,.health-references a{font-size:12px;line-height:2.3}
+.health-references a{text-decoration:underline;text-underline-offset:4px;overflow-wrap:anywhere}
+.health-references code{display:inline-block;max-width:100%;overflow-x:auto;font-size:12px;vertical-align:middle}
+.health-teaser{margin-top:35px;background:var(--sky);padding:28px;border-radius:15px;display:flex;align-items:center;justify-content:space-between;gap:25px}
+.health-teaser h2{font-size:23px}
+.health-teaser p{font-size:12px;line-height:2}
+@media(max-width:900px){.health-layout{grid-template-columns:1fr}.health-method{padding:24px}}
+@media(max-width:720px){header>.head>nav{flex-wrap:nowrap;overflow-x:auto}.health-panel{padding:21px}.health-fields,.health-result-grid{grid-template-columns:1fr}.health-wide{grid-column:auto}.health-result{padding:22px}.health-result strong{font-size:22px}.health-teaser{display:block;padding:24px}.health-teaser .primary{margin-top:10px}.health-fields select{font-size:11px}.health-results .section-heading{display:block}.health-result a{display:inline-block;padding:5px 0}}

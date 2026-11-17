@@ -1,0 +1,22 @@
+[Unit]
+Description=WHEY CLUB Django API
+After=network.target
+
+[Service]
+WorkingDirectory=/opt/whey-club/application/backend
+Environment=DJANGO_DEBUG=0
+Environment=DJANGO_ALLOWED_HOSTS=94.184.25.127,localhost,127.0.0.1
+Environment=WHEY_PUBLICATION_STATE=/var/lib/whey-club-publisher/publication.json
+EnvironmentFile=/opt/whey-club/django.env
+ExecStart=/opt/whey-club/django-venv/bin/python -m gunicorn config.wsgi:application --bind 127.0.0.1:8089 --workers 1 --threads 2 --access-logfile -
+Restart=on-failure
+DynamicUser=yes
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+MemoryMax=160M
+CPUQuota=30%
+
+[Install]
+WantedBy=multi-user.target

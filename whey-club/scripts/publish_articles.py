@@ -92,6 +92,14 @@ def render(articles, published, output, origin):
     atomic(output/'blog/articles.json',json.dumps([{'title':a['title'],'category':a['category'],'description':a['meta_description'],'url':article_path(a),'published_at':d,'id':a['id']} for a,d in reversed(chosen)],ensure_ascii=False))
     urls=json.loads((output/'public-routes.json').read_text()) if (output/'public-routes.json').exists() else ['/']
     urls+=['/blog/']+[category_path(c) for c in categories]+[article_path(a) for a,d in chosen]
+    entry_file=output/'react-entry.json'
+    if entry_file.exists():
+        entry=json.loads(entry_file.read_text())['src']
+        for page in (output/'blog').rglob('index.html'):
+            text=page.read_text()
+            text=re.sub(r'<script src="/blog.js" defer></script>','',text)
+            text=text.replace('<body>','<body><div id="root">').replace('</body>','</div><script type="module" src="'+esc(entry)+'"></script></body>')
+            atomic(page,text)
     atomic(output/'sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join('<url><loc>'+esc(origin+u)+'</loc></url>' for u in urls)+'</urlset>')
     atomic(output/'robots.txt','User-agent: *\nAllow: /\nSitemap: '+origin+'/sitemap.xml\n')
 
