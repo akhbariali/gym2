@@ -33,3 +33,15 @@ Do not put the private article queue in frontend assets. The API reads it from `
 ## Dedicated server
 
 Production host: `root@45.149.78.179`; website: `http://45.149.78.179` on port 80. Django stays private on loopback port 8089. The former shared host is retired for this project; its project services are disabled after migration verification. The article queue and publication history are transferred unchanged. Domain/TLS configuration will be added once a domain is supplied.
+
+## Accounts, delivery addresses and checkout
+
+React routes: `/account/`, `/account/register/`, `/account/login/`, `/account/addresses/`, `/checkout/`. Django session authentication uses CSRF protection, password hashing/validation and an authentication attempt limit. Addresses are scoped to the signed-in user; the optional Leaflet/OpenStreetMap picker loads tiles only when explicitly opened and never requests device geolocation.
+
+`Address` and `CheckoutDraft` models are migrated into a persistent SQLite database at `/var/lib/whey-club-django/db.sqlite3` (`WHEY_DATABASE`), owned by the API's dynamic service user in a private state directory. Back up this directory separately from source deployments; never replace it with build artifacts. `python manage.py migrate` is required on schema updates.
+
+Checkout validates ownership, product IDs and quantities, computes prices on the backend, and uses an idempotency key to avoid duplicate drafts. The cart is retained. Drafts are not paid/final orders. Payment availability and URL remain false/null until a real, server-verified payment provider integration is implemented. No mock successful payment or fake gateway redirect is provided. Catalog prices are still illustrative and delivery costs are not finalized.
+
+Production account and checkout APIs require HTTPS (`ACCOUNT_REQUIRE_HTTPS`); the public HTTP account screens display an HTTPS-required message. Do not disable this guard for real users. Domain DNS currently is not ready. Once TLS is configured, set the domain in allowed hosts, configure trusted reverse-proxy HTTPS detection, and keep secure cookies enabled. Local development over localhost works without this production guard. There is no email verification/password-reset email service yet; registration states this explicitly.
+
+Run account/ownership/CSRF/checkout/throttle tests using `python manage.py test store`. Rate limiting uses Django's process-shared local-memory cache for the single-worker deployment; adopt a shared cache before increasing Gunicorn workers. Nginx overwrites X-Forwarded-For to prevent spoofing; configure trusted CDN real-IP handling before routing account traffic through a CDN.

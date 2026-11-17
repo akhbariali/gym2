@@ -12,3 +12,7 @@ for source in (root/'dist').rglob('index.html'):
     text=re.sub(r'<script\b[^>]*>.*?</script>','',text,flags=re.S)
     text=re.sub(r'(<body\b[^>]*>)',r'\1<div id="root">',text).replace('</body>','</div><script type="module" src="'+entry+'"></script></body>')
     target=build/source.relative_to(root/'dist');target.parent.mkdir(parents=True,exist_ok=True);target.write_text(text)
+
+for route,title in [('account','حساب کاربری'),('account/login','ورود به حساب'),('account/register','ثبت‌نام'),('account/addresses','نشانی‌های من'),('checkout','تکمیل خرید')]:
+    target=build/route/'index.html';target.parent.mkdir(parents=True,exist_ok=True)
+    target.write_text('<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>'+title+' | وی کلاب</title><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/blog.css"><link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"></head><body><div id="root"></div><script type="module" src="'+entry+'"></script></body></html>')
