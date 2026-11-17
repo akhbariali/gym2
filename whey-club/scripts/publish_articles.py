@@ -94,9 +94,10 @@ def render(articles, published, output, origin):
     urls+=['/blog/']+[category_path(c) for c in categories]+[article_path(a) for a,d in chosen]
     entry_file=output/'react-entry.json'
     if entry_file.exists():
-        entry=json.loads(entry_file.read_text())['src']
+        entry_config=json.loads(entry_file.read_text());entry=entry_config['src']
+        style_links=''.join('<link rel="stylesheet" href="'+esc(href)+'">' for href in entry_config.get('styles',[]))
         for page in (output/'blog').rglob('index.html'):
-            text=page.read_text()
+            text=page.read_text().replace('</head>',style_links+'</head>')
             text=re.sub(r'<script src="/blog.js" defer></script>','',text)
             text=text.replace('<body>','<body><div id="root">').replace('</body>','</div><script type="module" src="'+esc(entry)+'"></script></body>')
             atomic(page,text)
