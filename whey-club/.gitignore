@@ -1,0 +1,16 @@
+.DS_Store
+*.log
+.env
+.env.*
+__pycache__/
+whey-club/.publication-state/
+whey-club/dist/blog/
+whey-club/dist/sitemap.xml
+whey-club/dist/robots.txt
+whey-club/backend/.venv/
+whey-club/backend/db.sqlite3
+whey-club/frontend/node_modules/
+whey-club/frontend/build/
+whey-club/checkout-proof.jpg
+build/
+node_modules/
