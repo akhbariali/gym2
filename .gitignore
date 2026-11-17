@@ -12,3 +12,5 @@ whey-club/backend/db.sqlite3
 whey-club/frontend/node_modules/
 whey-club/frontend/build/
 whey-club/checkout-proof.jpg
+build/
+node_modules/
