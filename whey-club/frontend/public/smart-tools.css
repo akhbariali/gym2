@@ -1,25 +1,25 @@
-/* Keep the standalone calculator section independent of the homepage theme. */
-#smartTools{display:grid;grid-template-columns:1.2fr 1fr;gap:60px;margin-top:55px;padding:46px 55px;background:#191c1e!important;color:#f4f1ea;border:0;border-radius:4px!important;overflow:hidden}
-#smartTools .brand-eyebrow{font-size:11px;font-weight:500;line-height:1.9;color:#b8c5ac}
+/* Match the smart tools section to the shared homepage palette. */
+#smartTools{display:grid;grid-template-columns:1.2fr 1fr;gap:60px;margin-top:55px;padding:46px 55px;background:var(--ink)!important;color:var(--paper);border:0;border-radius:4px!important;overflow:hidden}
+#smartTools .brand-eyebrow{font-size:11px;font-weight:500;line-height:1.9;color:var(--accent)}
 #smartTools h2{font-size:33px;line-height:1.9;letter-spacing:-.8px;margin:15px 0}
-#smartTools p{font-size:12px;line-height:2.4;color:#f4f1eabd;max-width:470px;margin-bottom:24px}
-#smartTools .primary{background:#aab99b;color:#191c1e;border-radius:4px;padding:15px 23px;font-size:13px;gap:24px;box-shadow:none}
-#smartTools .primary>span{color:#191c1e}
-#smartTools .primary:hover{background:#c0cdb4}
-#smartTools .primary:focus-visible{outline:3px solid #f4f1ea;outline-offset:5px}
-#smartTools .brand-tool-copy>small{display:block;font-size:9px;line-height:2;color:#f4f1ea94;margin-top:18px}
-#smartTools .brand-tool-art{position:relative;isolation:isolate;align-self:center;border:1px solid #f4f1ea26;border-radius:12px;padding:25px;background:#252b26;transform:rotate(-4deg);max-width:340px;width:100%;justify-self:center}
-#smartTools .brand-tool-art>span{display:block;font:9px Arial,sans-serif;text-align:left;letter-spacing:2px;color:#aab99b}
-#smartTools .brand-tool-orbit{position:absolute;width:450px;height:450px;border:1px solid #aab99b26;border-radius:50%;top:-70px;left:-60px;z-index:-1;box-shadow:0 0 0 42px #aab99b06,0 0 0 85px #aab99b04;pointer-events:none}
+#smartTools p{font-size:12px;line-height:2.4;color:color-mix(in srgb,var(--paper) 74%,transparent);max-width:470px;margin-bottom:24px}
+#smartTools .primary{background:var(--accent);color:var(--ink);border-radius:4px;padding:15px 23px;font-size:13px;gap:24px;box-shadow:none}
+#smartTools .primary>span{color:var(--ink)}
+#smartTools .primary:hover{background:color-mix(in srgb,var(--accent) 80%,var(--paper))}
+#smartTools .primary:focus-visible{outline:3px solid var(--paper);outline-offset:5px}
+#smartTools .brand-tool-copy>small{display:block;font-size:9px;line-height:2;color:color-mix(in srgb,var(--paper) 70%,transparent);margin-top:18px}
+#smartTools .brand-tool-art{position:relative;isolation:isolate;align-self:center;border:1px solid color-mix(in srgb,var(--paper) 15%,transparent);border-radius:12px;padding:25px;background:color-mix(in srgb,var(--ink) 92%,var(--paper));transform:rotate(-4deg);max-width:340px;width:100%;justify-self:center}
+#smartTools .brand-tool-art>span{display:block;font:9px Arial,sans-serif;text-align:left;letter-spacing:2px;color:var(--accent)}
+#smartTools .brand-tool-orbit{position:absolute;width:450px;height:450px;border:1px solid color-mix(in srgb,var(--accent) 15%,transparent);border-radius:50%;top:-70px;left:-60px;z-index:-1;box-shadow:0 0 0 42px color-mix(in srgb,var(--accent) 2.5%,transparent),0 0 0 85px color-mix(in srgb,var(--accent) 1.5%,transparent);pointer-events:none}
 #smartTools .brand-tool-stat{padding-top:24px}
-#smartTools .brand-tool-stat>span{font-size:10px;color:#f4f1ea99}
+#smartTools .brand-tool-stat>span{font-size:10px;color:color-mix(in srgb,var(--paper) 70%,transparent)}
 #smartTools .brand-tool-stat>b{font-size:24px;display:flex;align-items:center;justify-content:space-between;font-weight:500;margin-top:7px}
-#smartTools .brand-tool-stat i{font-style:normal;color:#aab99b;font-weight:400}
+#smartTools .brand-tool-stat i{font-style:normal;color:var(--accent);font-weight:400}
 #smartTools .brand-meter{display:flex;gap:5px;direction:ltr;margin-top:17px}
-#smartTools .brand-meter i{height:24px;background:#aab99b;flex:1;border-radius:2px}
-#smartTools .brand-meter i:nth-child(n+9){background:#aab99b26}
-#smartTools .brand-tool-line{height:4px;background:linear-gradient(to left,#b98559 65%,#f4f1ea26 65%);border-radius:2px;margin:18px 0 26px}
-#smartTools .brand-tool-art>small{font-size:9px;color:#f4f1ea99}
+#smartTools .brand-meter i{height:24px;background:var(--accent);flex:1;border-radius:2px}
+#smartTools .brand-meter i:nth-child(n+9){background:color-mix(in srgb,var(--accent) 15%,transparent)}
+#smartTools .brand-tool-line{height:4px;background:linear-gradient(to left,var(--accent) 65%,color-mix(in srgb,var(--paper) 15%,transparent) 65%);border-radius:2px;margin:18px 0 26px}
+#smartTools .brand-tool-art>small{font-size:9px;color:color-mix(in srgb,var(--paper) 70%,transparent)}
 @media(max-width:1050px){#smartTools{gap:35px;padding:35px}#smartTools h2{font-size:29px}}
 @media(max-width:720px){#smartTools{grid-template-columns:1fr;margin-top:35px;padding:28px 24px;gap:40px}#smartTools h2{font-size:28px}#smartTools .primary{font-size:11px;padding:13px 17px;gap:17px}#smartTools .brand-tool-art{width:90%;margin:5px 0 18px}}
 @media(prefers-reduced-motion:reduce){#smartTools .primary{transition:none}#smartTools .primary:hover{transform:none}}

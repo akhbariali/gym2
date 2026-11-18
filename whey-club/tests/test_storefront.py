@@ -50,6 +50,11 @@ class StorefrontTests(unittest.TestCase):
             self.assertIn('ماشین حساب سلامت',health)
             self.assertIn('src="/health-calculator.js"',health)
             self.assertIn('id="healthForm"',health)
+            home=(dest/'index.html').read_text()
+            self.assertEqual(re.search(r'<header>.*?</header>',health,re.S).group(),
+                             re.search(r'<header>.*?</header>',home,re.S).group())
+            self.assertIn('class="trust-bar"',health)
+            self.assertIn('href="/luxe.css?v='+builder.STYLE_VERSION+'"',health)
             for product in products:
                 text=(dest/'products'/product['slug']/'index.html').read_text()
                 self.assertIn('application/ld+json',text)
@@ -62,12 +67,12 @@ class StorefrontTests(unittest.TestCase):
             self.assertIn('/start/',routes)
             home=(dest/'index.html').read_text();parser=Links();parser.feed(home)
             self.assertEqual(len(parser.videos),0)
-            self.assertIn('/assets/training.webp',parser.links)
+            self.assertIn('/assets/training.webp',[urlparse(link).path for link in parser.links])
             self.assertNotIn('/homepage.js',parser.links)
             self.assertLess((ROOT/'dist/assets/training.webp').stat().st_size,500_000)
             self.assertIn('/start/',parser.links)
             self.assertIn('/shop/',parser.links)
-            self.assertLess(home.index('id="supplementTitle"'),home.index('class="health-teaser"'))
+            self.assertLess(home.index('id="supplementTitle"'),home.index('id="smartTools"'))
             self.assertLess(home.index('href="/shop/"'),home.index('href="/start/"'))
             hero=home.split('class="natural-actions"',1)[1].split('</div>',1)[0]
             self.assertIn('class="primary" href="/shop/"',hero)
