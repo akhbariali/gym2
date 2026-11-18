@@ -32,6 +32,16 @@ Do not put the private article queue in frontend assets. The API reads it from `
 
 ## Dedicated server
 
+Deploy the current checkout's frontend from `whey-club/`:
+
+```sh
+bash scripts/deploy.sh
+# Override the connection when needed:
+DEPLOY_HOST=root@45.149.78.179 DEPLOY_PORT=22 bash scripts/deploy.sh
+```
+
+Requires local Python 3, Node/npm, rsync, and working SSH key authentication; the server also needs Bash, rsync, tar, and write access to `/opt/whey-club`. The script runs tests, installs locked frontend dependencies, builds and prerenders the pages, backs up the existing site under `/opt/whey-club/backups/`, and uploads to `/opt/whey-club/site/`. It preserves published articles, sitemap, robots.txt, and older bundles. After upload it validates `/opt/whey-club/nginx.conf`, restarts the site’s `whey-club.service`, and checks that the service is active. It does not pull Git changes, deploy backend code, migrate the database, or alter Nginx configuration. Verify the public site after upload; backups and older bundles require occasional manual cleanup.
+
 Production host: `root@45.149.78.179`; website: `http://45.149.78.179` on port 80. Django stays private on loopback port 8089. The former shared host is retired for this project; its project services are disabled after migration verification. The article queue and publication history are transferred unchanged. Domain/TLS configuration will be added once a domain is supplied.
 
 ## Accounts, delivery addresses and checkout

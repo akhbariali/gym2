@@ -1,0 +1,126 @@
+/* Homepage brand direction; other pages keep their current visual theme. */
+.brand-home{--ink:#17243f;--marine:#17243f;--muted:#5c625b;--paper:#f4f1ea;--stone:#f4f1ea;--accent:#aab99b;--sky:#dce1d3;--periwinkle:#b98559;--surface:#eae8df;--line:#17243f24;background:var(--paper);color:var(--ink)}
+.brand-home .wrap{max-width:1280px}
+.brand-home .head{height:90px}
+.brand-home .head>nav a{color:var(--ink)}
+.brand-home .logo small{font-size:6px;letter-spacing:.7px;line-height:1.6}
+.brand-home .logo b{background:var(--ink);color:var(--paper);transform:none;border-radius:0;font-style:normal}
+.brand-home .trust-bar{background:var(--ink);color:var(--paper)}
+.brand-home .trust-bar a{color:var(--paper)}
+.brand-home .brand-main{padding-top:0}
+.brand-home h1,.brand-home h2,.brand-home h3{letter-spacing:-.8px}
+.brand-home .primary{background:var(--ink);color:var(--paper);border-radius:4px;padding:15px 23px;box-shadow:none;font-size:13px;gap:24px}
+.brand-home .primary>span{color:var(--paper)}
+.brand-home .primary:hover{background:var(--marine);transform:translateY(-2px)}
+.brand-home a:focus-visible{outline:3px solid #657a52;outline-offset:5px}
+.brand-eyebrow{font-size:11px;font-weight:500;display:flex;align-items:center;gap:10px;color:var(--muted);line-height:1.9}
+.brand-hero{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center;padding:48px 0 40px}
+.brand-hero-copy{padding:18px 0}
+.brand-hero-copy>.brand-eyebrow>span{height:7px;width:7px;background:#b98559;border-radius:50%}
+.brand-hero h1{font-size:clamp(38px,4.3vw,61px);font-weight:800;line-height:1.65;margin:22px 0 18px;letter-spacing:-2px}
+.brand-hero h1 em{color:#607650;font-style:normal}
+.brand-hero-copy>p{font-size:14px;line-height:2.5;max-width:460px;color:var(--muted)}
+.brand-home .natural-actions{margin-top:30px;gap:25px}
+.brand-secondary{display:inline-flex;align-items:center;gap:17px;font-size:12px;border-bottom:1px solid var(--ink);padding:12px 0}
+.brand-hero-foot{display:flex;justify-content:space-between;align-items:center;gap:20px;border-top:1px solid var(--line);margin-top:45px;padding-top:20px}
+.brand-hero-foot>span{font:600 10px/1.8 Arial,sans-serif;letter-spacing:1.5px;text-align:left}
+.brand-hero-foot>p{font-size:10px;line-height:2;color:var(--muted);margin:0}
+.brand-hero-image{position:relative;align-self:stretch;min-height:520px;margin:0;background:#b6baab;border-radius:150px 4px 4px 4px;overflow:hidden;isolation:isolate}
+.brand-hero-image:after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,#17243fc2,transparent 48%);z-index:0;pointer-events:none}
+.brand-hero-image>img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover;object-position:65% center;filter:saturate(.55)}
+.brand-hero-image figcaption{position:absolute;bottom:24px;inset-inline:25px;display:flex;align-items:center;justify-content:space-between;color:#fff;font-size:11px;z-index:1;gap:12px}
+.brand-hero-image figcaption>span:last-child{font-size:26px}
+.brand-image-label{position:absolute;top:30px;right:26px;text-align:left;direction:ltr;color:#fff;font:600 11px/1.6 Arial,sans-serif;letter-spacing:2px}
+.brand-principles{list-style:none;margin:0;padding:29px 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-block:1px solid var(--line);gap:25px}
+.brand-principles li{display:flex;gap:14px;align-items:start}
+.brand-principles li>span{font-size:11px;color:#8b5c37;margin-top:3px}
+.brand-principles b{font-size:12px;font-weight:600}
+.brand-principles p{font-size:10px;line-height:2;color:var(--muted);margin:5px 0 0}
+.brand-section{margin-top:85px}
+.brand-heading{display:flex;align-items:end;justify-content:space-between;gap:25px;margin-bottom:27px}
+.brand-heading h2{font-size:29px;line-height:1.8;margin:9px 0 0;font-weight:700}
+.brand-heading>a{font-size:11px;white-space:nowrap;padding-bottom:8px;display:flex;gap:24px;align-items:center}
+.brand-heading>a:hover,.brand-closing>a:hover{text-decoration:underline;text-underline-offset:6px}
+.brand-heading>a>span{font-size:20px}
+.brand-goals{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.brand-goals>a{border:1px solid var(--line);padding:25px 22px 20px;min-width:0;border-radius:4px;transition:background .2s}
+.brand-goals>a:hover{background:#e4e7dc}
+.brand-goals>a:nth-child(2){background:#e7eadd}
+.brand-goals>a>span{font-size:10px;color:var(--muted)}
+.brand-goals h3{font-size:22px;margin:27px 0 10px}
+.brand-goals p{font-size:11px;color:var(--muted);line-height:2.2;min-height:48px}
+.brand-goals b{font-size:10px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:18px;margin-top:23px;font-weight:500}
+.brand-goals i{font-size:22px;font-style:normal}
+.brand-section-intro{font-size:12px;line-height:2.2;color:var(--muted);margin:-12px 0 25px}
+.brand-products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.brand-products>a{min-width:0;display:block}
+.brand-products a>div{height:275px;display:grid;place-items:center;position:relative;background:#e7e6dc;border-radius:4px;margin-bottom:20px;overflow:hidden}
+.brand-products a:nth-child(2)>div{background:#dce2d3}
+.brand-products a:nth-child(3)>div{background:#e7ddd1}
+.brand-products img{width:150px;height:210px;object-fit:contain;filter:drop-shadow(0 15px 14px #17243f24);transition:transform .3s}
+.brand-products a:hover img{transform:translateY(-5px)}
+.brand-products a>span{font-size:10px;color:var(--muted)}
+.brand-products h3{font-size:16px;line-height:1.9;margin:9px 0}
+.brand-products p{font-size:15px;font-weight:600;margin:12px 0 6px}
+.brand-products .unit-price{font-size:11px;color:#566449;margin:0}
+.brand-products b{display:block;font-size:11px;font-weight:500;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.brand-demo-note{font-size:10px;line-height:2.2;color:var(--muted);margin-top:25px;display:flex;gap:8px;align-items:baseline}
+.brand-home .health-teaser{margin:75px 0 0;display:grid;grid-template-columns:1.2fr 1fr;gap:60px;padding:46px 55px;background:var(--ink);color:var(--paper);border:0;border-radius:4px;overflow:hidden}
+.brand-tool-copy>.brand-eyebrow{color:#b8c5ac}
+.brand-home .health-teaser h2{font-size:33px;line-height:1.9;margin:15px 0}
+.brand-home .health-teaser p{font-size:12px;line-height:2.4;color:#f4f1eabd;max-width:470px;margin-bottom:24px}
+.brand-home .health-teaser .primary{background:var(--accent);color:var(--ink)}
+.brand-home .health-teaser .primary>span{color:var(--ink)}
+.brand-tool-copy>small{display:block;font-size:9px;line-height:2;color:#f4f1ea94;margin-top:18px}
+.brand-tool-art{position:relative;isolation:isolate;align-self:center;border:1px solid #f4f1ea26;border-radius:12px;padding:25px;background:var(--marine);transform:rotate(-4deg);max-width:340px;width:100%;justify-self:center}
+.brand-tool-art>span{display:block;font:9px Arial,sans-serif;text-align:left;letter-spacing:2px;color:#aab99b}
+.brand-tool-orbit{position:absolute;width:450px;height:450px;border:1px solid #aab99b26;border-radius:50%;top:-70px;left:-60px;z-index:-1;box-shadow:0 0 0 42px #aab99b06,0 0 0 85px #aab99b04;pointer-events:none}
+.brand-tool-stat{padding-top:24px}
+.brand-tool-stat>span{font-size:10px;color:#f4f1ea99}
+.brand-tool-stat>b{font-size:24px;display:flex;align-items:center;justify-content:space-between;font-weight:500;margin-top:7px}
+.brand-tool-stat i{font-style:normal;color:var(--accent);font-weight:400}
+.brand-meter{display:flex;gap:5px;direction:ltr;margin-top:17px}
+.brand-meter i{height:24px;background:var(--accent);flex:1;border-radius:2px}
+.brand-meter i:nth-child(n+9){background:#aab99b26}
+.brand-tool-line{height:4px;background:linear-gradient(to left,#b98559 65%,#f4f1ea26 65%);border-radius:2px;margin:18px 0 26px}
+.brand-tool-art>small{font-size:9px;color:#f4f1ea99}
+.brand-guides{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.brand-guides>a{padding:30px 35px;background:#e5e8dd;border-radius:4px}
+.brand-guides>a:nth-child(2){background:#ebe4db}
+.brand-guides a>span{font-size:11px;display:flex;justify-content:space-between;align-items:center;color:var(--muted)}
+.brand-guides i{font-size:25px;font-style:normal}
+.brand-guides h3{font-size:27px;line-height:1.9;margin:23px 0 13px}
+.brand-guides p{font-size:12px;line-height:2.2;color:var(--muted);max-width:370px}
+.brand-guides b{display:block;font-size:11px;font-weight:500;margin-top:27px}
+.brand-home .editorial-card{border-color:var(--line);background:transparent;border-radius:4px;box-shadow:none}
+.brand-home .editorial-art{background:#dce2d3;color:var(--ink)}
+.brand-home .editorial-art b,.brand-home .editorial-art i{color:var(--ink)}
+.brand-home .editorial-art.art-1{background:#e7ddd1}
+.brand-home .editorial-art.art-2{background:#d6dbd2}
+.brand-home .editorial-body{padding:22px}
+.brand-home .article-category,.brand-home .editorial-body p{color:var(--muted)}
+.brand-home .editorial-body h2{font-size:20px}
+.brand-journal-fallback{font-size:13px;line-height:2.3;padding:30px;border:1px solid var(--line);border-radius:4px}
+.brand-closing{position:relative;overflow:hidden;border-block:1px solid var(--line);padding:48px 0;margin:80px 0 55px}
+.brand-closing h2{font-size:34px;line-height:1.8;margin:14px 0}
+.brand-closing p{font-size:13px;line-height:2.4;color:var(--muted)}
+.brand-closing>a{font-size:12px;display:inline-flex;gap:30px;margin-top:15px}
+.brand-closing-mark{position:absolute;left:30px;bottom:25px;color:#aab99b77;font:700 155px/1 Arial,sans-serif;direction:ltr;letter-spacing:-18px;pointer-events:none}
+.brand-home .site-footer{background:#eae8df;color:var(--ink)}
+.brand-home .site-footer a,.brand-home .site-footer p,.brand-home .site-footer span{color:var(--ink)}
+@media(min-width:1600px){.brand-hero{padding-block:65px}.brand-hero-image{min-height:570px}}
+@media(max-width:1050px){.brand-hero{gap:35px}.brand-hero-image{min-height:490px}.brand-home .head>nav{gap:13px;font-size:10px}.brand-hero-foot{margin-top:28px}.brand-principles{grid-template-columns:1fr 1fr}.brand-goals{grid-template-columns:1fr 1fr}.brand-home .health-teaser{gap:35px;padding:35px}.brand-home .health-teaser h2{font-size:29px}}
+@media(max-width:720px){.brand-home .wrap{padding-inline:22px}.brand-home .head{height:auto;min-height:110px;gap:12px;padding-block:16px}.brand-home .head>nav{order:3;flex-basis:100%;flex-wrap:nowrap;overflow-x:auto;gap:22px;height:32px;font-size:10px}.brand-home .logo{font-size:22px}.brand-home .logo small{font-size:5px}.brand-home .cart-button{padding:8px 10px;font-size:10px;gap:6px}.brand-home .account-link{font-size:10px}.brand-home .trust-inner{min-height:32px;gap:12px;font-size:9px}.brand-home .trust-inner>span:nth-child(2),.brand-home .trust-inner>span:nth-child(3){display:none}.brand-hero{grid-template-columns:1fr;gap:26px;padding:24px 0 30px}.brand-hero-copy{padding:0}.brand-hero h1{font-size:42px;line-height:1.6;margin:16px 0}.brand-hero-copy>p{font-size:12px;line-height:2.4}.brand-home .natural-actions{gap:20px;margin-top:24px;justify-content:flex-start}.brand-home .primary{font-size:11px;padding:13px 17px;gap:17px}.brand-secondary{font-size:11px}.brand-hero-foot{margin-top:28px;padding-top:17px}.brand-hero-foot>span{font-size:8px}.brand-hero-image{min-height:320px;border-radius:90px 4px 4px 4px}.brand-principles{gap:23px 15px;padding-block:25px}.brand-principles li{gap:9px}.brand-principles b{font-size:11px}.brand-principles p{font-size:9px}.brand-section{margin-top:50px}.brand-heading{align-items:start;gap:12px;flex-wrap:wrap;margin-bottom:22px}.brand-heading h2{font-size:23px}.brand-heading>a{font-size:10px;gap:12px;padding:0}.brand-eyebrow{font-size:10px}.brand-goals{gap:12px}.brand-goals>a{padding:19px 14px 16px}.brand-goals>a>span{font-size:8px}.brand-goals h3{font-size:19px;margin-top:22px}.brand-goals p{font-size:10px;min-height:64px}.brand-goals b{font-size:9px;margin-top:17px;padding-top:13px}.brand-products{grid-template-columns:1fr;gap:30px}.brand-products a>div{height:260px;margin-bottom:16px}.brand-products h3{font-size:16px}.brand-products b{margin-top:14px;padding-top:13px}.brand-section-intro{margin-top:0;font-size:11px}.brand-home .health-teaser{grid-template-columns:1fr;margin-top:45px;padding:28px 24px;gap:40px}.brand-home .health-teaser h2{font-size:28px}.brand-tool-art{width:90%;margin:5px 0 18px}.brand-guides{grid-template-columns:1fr;gap:16px}.brand-guides>a{padding:25px}.brand-guides h3{font-size:25px}.brand-closing{padding-block:35px;margin:50px 0 35px}.brand-closing h2{font-size:25px}.brand-closing p{font-size:11px;padding-inline-end:30px}.brand-closing-mark{font-size:75px;left:5px;bottom:32px;letter-spacing:-10px;opacity:.5}.brand-closing>a{position:relative;z-index:1}.brand-home .editorial-body{padding:20px}.brand-home .site-footer .footer-grid{padding-inline:22px}}
+@media(prefers-reduced-motion:reduce){.brand-home .primary,.brand-products img,.brand-goals>a{transition:none}.brand-home .primary:hover,.brand-products a:hover img{transform:none}.brand-home{scroll-behavior:auto}}
+
+@media(max-width:720px){.brand-home .logo small{display:none}.brand-home .logo{font-size:20px;gap:7px}.brand-home .logo b{width:30px;height:30px;font-size:25px}.brand-home .head{column-gap:10px}.brand-home .cart-button{font-size:9px;padding:8px;gap:4px}.brand-home .head>nav{scrollbar-width:thin}}
+
+/* V2: show the current launch status before linking to the demo catalog. */
+.brand-launch-note{border-inline-start:3px solid #b98559;background:#eae8df;padding:13px 16px;margin-top:22px}
+.brand-launch-note b{font-size:11px}.brand-launch-note p{font-size:11px;line-height:2.2;color:var(--muted);margin:5px 0 0}
+.brand-selection-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.brand-selection-grid article{padding:25px;border:1px solid var(--line);border-radius:4px}
+.brand-selection-grid article>span{font-size:10px;color:var(--muted)}
+.brand-selection-grid h3{font-size:21px;margin:20px 0 12px}
+.brand-selection-grid p{font-size:12px;line-height:2.3;color:var(--muted);margin:0}
+@media(max-width:720px){.brand-selection-grid{grid-template-columns:1fr;gap:14px}.brand-launch-note{padding:12px 14px}.brand-launch-note p{font-size:10px}.brand-home .natural-actions .primary{font-size:10px}}
