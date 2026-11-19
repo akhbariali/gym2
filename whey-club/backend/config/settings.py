@@ -9,7 +9,25 @@ ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').sp
 INSTALLED_APPS = ['django.contrib.contenttypes', 'django.contrib.auth', 'django.contrib.sessions', 'store']
 MIDDLEWARE = ['django.middleware.security.SecurityMiddleware', 'store.middleware.SecureAccountMiddleware', 'django.middleware.common.CommonMiddleware', 'django.contrib.sessions.middleware.SessionMiddleware', 'django.contrib.auth.middleware.AuthenticationMiddleware', 'django.middleware.csrf.CsrfViewMiddleware']
 ROOT_URLCONF = 'config.urls'
-DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3', 'NAME': os.environ.get('WHEY_DATABASE', BASE_DIR / 'db.sqlite3')}}
+# PostgreSQL is the default. SQLite is an explicit development/rollback option only.
+DB_ENGINE = os.environ.get('WHEY_DB_ENGINE', 'postgresql')
+if DB_ENGINE not in ('postgresql', 'sqlite'):
+    raise ValueError('WHEY_DB_ENGINE must be postgresql or sqlite')
+if DB_ENGINE == 'sqlite':
+    DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3', 'NAME': os.environ.get('WHEY_DATABASE', BASE_DIR / 'db.sqlite3')}}
+else:
+    DATABASES = {'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('PGDATABASE', 'wheyclub'),
+        'USER': os.environ.get('PGUSER', 'wheyclub'),
+        'PASSWORD': os.environ.get('PGPASSWORD', ''),
+        'HOST': os.environ.get('PGHOST', '127.0.0.1'),
+        'PORT': os.environ.get('PGPORT', '5432'),
+        'CONN_MAX_AGE': 60,
+        'CONN_HEALTH_CHECKS': True,
+        'OPTIONS': {'connect_timeout': 10, 'sslmode': os.environ.get('PGSSLMODE', 'prefer')},
+    }}
+
 USE_TZ = True
 TIME_ZONE = 'UTC'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

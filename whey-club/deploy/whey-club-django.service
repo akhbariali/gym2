@@ -1,11 +1,11 @@
 [Unit]
 Description=WHEY CLUB Django API
-After=network.target
+After=network.target postgresql.service
 
 [Service]
 StateDirectory=whey-club-django
 StateDirectoryMode=0700
-Environment=WHEY_DATABASE=/var/lib/whey-club-django/db.sqlite3
+Environment=WHEY_DB_ENGINE=postgresql
 WorkingDirectory=/opt/whey-club/application/backend
 Environment=DJANGO_DEBUG=0
 Environment=DJANGO_ALLOWED_HOSTS=45.149.78.179,localhost,127.0.0.1

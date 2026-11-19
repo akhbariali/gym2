@@ -6,7 +6,7 @@
 
 ## Development
 
-Backend (Python 3.10+):
+Backend (Python 3.10+; configure PostgreSQL first as described in [POSTGRESQL.md](POSTGRESQL.md)):
 
 ```sh
 cd backend
@@ -48,7 +48,7 @@ Production host: `root@45.149.78.179`; website: `http://45.149.78.179` on port 8
 
 React routes: `/account/`, `/account/register/`, `/account/login/`, `/account/addresses/`, `/checkout/`. Django session authentication uses CSRF protection, password hashing/validation and an authentication attempt limit. Addresses are scoped to the signed-in user; the optional Leaflet/OpenStreetMap picker loads tiles only when explicitly opened and never requests device geolocation.
 
-`Address` and `CheckoutDraft` models are migrated into a persistent SQLite database at `/var/lib/whey-club-django/db.sqlite3` (`WHEY_DATABASE`), owned by the API's dynamic service user in a private state directory. Back up this directory separately from source deployments; never replace it with build artifacts. `python manage.py migrate` is required on schema updates.
+`Address` and `CheckoutDraft` use PostgreSQL by default, configured through private `PG*` environment variables. The old SQLite database is retained only for verified migration/rollback. See [POSTGRESQL.md](POSTGRESQL.md) for setup, data transfer, verification and backups. Source deployments must never replace database storage or credentials. `python manage.py migrate` is required on schema updates.
 
 Checkout validates ownership, product IDs and quantities, computes prices on the backend, and uses an idempotency key to avoid duplicate drafts. The cart is retained. Drafts are not paid/final orders. Payment availability and URL remain false/null until a real, server-verified payment provider integration is implemented. No mock successful payment or fake gateway redirect is provided. Catalog prices are still illustrative and delivery costs are not finalized.
 
