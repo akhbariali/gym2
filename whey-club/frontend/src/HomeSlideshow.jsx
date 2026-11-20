@@ -9,7 +9,7 @@ const slides = [
   {title:'با آگاهی انتخاب کن', text:'راهنمای انتخاب پروتئین وی', href:'/guide/whey-protein/', image:null, alt:''},
 ];
 export default function HomeSlideshow(){
-  const [mount,setMount]=useState(null), [poster,setPoster]=useState(''), [current,setCurrent]=useState(0), [paused,setPaused]=useState(false), [hovered,setHovered]=useState(false);
+  const [mount,setMount]=useState(null), [poster,setPoster]=useState(''), [current,setCurrent]=useState(0), [hovered,setHovered]=useState(false);
   useEffect(()=>{
     const original=document.querySelector('main > .natural-hero');
     if(!original)return;
@@ -19,20 +19,18 @@ export default function HomeSlideshow(){
     return()=>container.replaceWith(original);
   },[]);
   useEffect(()=>{
-    if(paused||hovered||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-    const timer=setInterval(()=>{if(!document.hidden)setCurrent(i=>(i+1)%slides.length)},6000);
+    if(hovered||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    const timer=setInterval(()=>{if(!document.hidden)setCurrent(i=>(i+1)%slides.length)},5000);
     return()=>clearInterval(timer);
-  },[paused,hovered]);
+  },[hovered]);
   if(!mount)return null;
-  return createPortal(<section className="home-slideshow" aria-label="پیشنهادهای وی کلاب" aria-roledescription="اسلایدشو" onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)} onFocusCapture={()=>setPaused(true)} onKeyDown={e=>{if(e.key==='ArrowLeft'){e.preventDefault();setCurrent(i=>(i+1)%slides.length)}if(e.key==='ArrowRight'){e.preventDefault();setCurrent(i=>(i+slides.length-1)%slides.length)}}}>
+  return createPortal(<section className="home-slideshow" aria-label="پیشنهادهای وی کلاب" aria-roledescription="اسلایدشو" onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)} onKeyDown={e=>{if(e.key==='ArrowLeft'){e.preventDefault();setCurrent(i=>(i+1)%slides.length)}if(e.key==='ArrowRight'){e.preventDefault();setCurrent(i=>(i+slides.length-1)%slides.length)}}}>
     {slides.map((slide,i)=><div key={slide.title} className={`home-slide home-slide-${i}${slide.original?' home-slide-original':''}`} role="group" aria-roledescription="اسلاید" aria-label={`${i+1} از ${slides.length}`} hidden={i!==current}>
       {slide.original?<div dangerouslySetInnerHTML={{__html:poster}}/>:<>{slide.image&&<img src={slide.image} alt={slide.alt}/>}
       <div className="home-slide-copy"><span>WHEY CLUB</span><h2>{slide.title}</h2><p>{slide.text}</p><a href={slide.href}>مشاهده و انتخاب ←</a></div></>}
     </div>)}
     <div className="home-slide-controls"><button type="button" aria-label="اسلاید قبلی" onClick={()=>setCurrent(i=>(i+slides.length-1)%slides.length)}>→</button>
-      <div className="home-slide-dots">{slides.map((_,i)=><button key={i} type="button" aria-label={`نمایش اسلاید ${i+1}`} aria-pressed={i===current} onClick={()=>setCurrent(i)}/>)}</div>
       <button type="button" aria-label="اسلاید بعدی" onClick={()=>setCurrent(i=>(i+1)%slides.length)}>←</button>
-      <button className="home-slide-pause" type="button" aria-label={paused?'شروع پخش خودکار':'توقف پخش خودکار'} onClick={()=>setPaused(p=>!p)}>{paused?'▶':'Ⅱ'}</button>
     </div>
   </section>,mount);
 }

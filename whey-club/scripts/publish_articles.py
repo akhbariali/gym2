@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Publish at most one queued article per 48 hours; dependency-free and restart-safe."""
+"""Publish at most one queued article per 24 hours; dependency-free and restart-safe."""
 import argparse
 import fcntl
 import html
@@ -10,7 +10,7 @@ import re
 from datetime import datetime, timezone, timedelta
 from urllib.parse import urlparse
 
-INTERVAL = timedelta(hours=48)
+INTERVAL = timedelta(hours=24)
 CATEGORY_SLUGS = {'پروتئین وی':'whey-protein','کراتین و مکمل\u200cها':'supplements','تغذیه ورزشی':'sports-nutrition','تمرین و عضله\u200cسازی':'training','اهداف و سبک زندگی':'fitness-lifestyle','راهنمای خرید و ایمنی':'buying-guides'}
 
 def article_path(article):
@@ -81,7 +81,7 @@ def render(articles, published, output, origin):
         schema={'@context':'https://schema.org','@type':'Article','headline':article['title'],'description':article['meta_description'],'inLanguage':'fa','datePublished':date,'dateModified':date,'author':{'@type':'Organization','name':'تحریریه وی کلاب'},'publisher':{'@type':'Organization','name':'WHEY CLUB'},'mainEntityOfPage':origin+path,'citation':article['sources'],'timeRequired':'PT2M'}
         atomic(output/path.lstrip('/')/'index.html',shell(article['seo_title'],article['meta_description'],body,origin,path,schema))
     categories=list(dict.fromkeys(a['category'] for a,d in chosen))
-    body='''<section class="journal-hero"><div><div class="kicker">THE WHEY CLUB JOURNAL</div><h1>تمرین کن. یاد بگیر.<br><em>طبیعی ادامه بده.</em></h1><p>راهنماهای کوتاه برای تمرین قابل اجرا، تغذیه روزمره و انتخاب آگاهانه مکمل؛ همراه مسیر بدنسازی طبیعی.</p><div class="journal-promise"><span>◷ حدود ۲ دقیقه مطالعه</span><span>↗ هر دو روز، یک مقاله تازه</span></div></div><div class="journal-graphic" dir="ltr"><span>LESS GUESSWORK.</span><b>MORE<br>KNOW<br>HOW<span>↗</span></b><small>READ. LEARN. GROW.</small></div></section>'''
+    body='''<section class="journal-hero"><div><div class="kicker">THE WHEY CLUB JOURNAL</div><h1>تمرین کن. یاد بگیر.<br><em>طبیعی ادامه بده.</em></h1><p>راهنماهای کوتاه برای تمرین قابل اجرا، تغذیه روزمره و انتخاب آگاهانه مکمل؛ همراه مسیر بدنسازی طبیعی.</p><div class="journal-promise"><span>◷ حدود ۲ دقیقه مطالعه</span><span>↗ هر روز، یک مقاله تازه</span></div></div><div class="journal-graphic" dir="ltr"><span>LESS GUESSWORK.</span><b>MORE<br>KNOW<br>HOW<span>↗</span></b><small>READ. LEARN. GROW.</small></div></section>'''
     body+='<section class="journal-list"><div class="section-heading"><div><div class="kicker">SMALL READS. BIG DIFFERENCE.</div><h2>برای یک قدم جلوتر بودن<span>.</span></h2></div><label class="article-search">⌕ <input id="articleSearch" type="search" placeholder="جستجو در مقاله‌ها…" aria-label="جستجوی مقاله‌ها"></label></div><div class="category-tabs"><a class="selected" href="/blog/">همه مقاله‌ها</a>'+''.join('<a href="'+category_path(c)+'">'+esc(c)+'</a>' for c in categories)+'</div><p id="articleCount">'+str(len(chosen))+' مقاله منتشرشده</p><div class="editorial-grid">'+''.join(card(a,d) for a,d in reversed(chosen))+'</div><p id="noArticles" hidden>مقاله‌ای با این جستجو پیدا نشد.</p></section><div class="journal-end"><b>دانش بیشتر، انتخاب بهتر.</b><span>مقاله بعدی، دو روز پس از آخرین انتشار به مجله اضافه می‌شود.</span><a href="/shop/whey-protein/">رفتن به فروشگاه ←</a></div>'
     atomic(output/'blog/index.html',shell('مجله وی کلاب | بدنسازی طبیعی، تمرین و تغذیه','راهنماهای دو دقیقه‌ای فارسی درباره پروتئین وی، مکمل‌های ورزشی، تغذیه و بدنسازی؛ هر دو روز یک مقاله تازه.',body,origin,'/blog/'))
     for category in categories:

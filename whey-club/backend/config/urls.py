@@ -12,3 +12,5 @@ urlpatterns += [
  path('api/account/addresses/<int:pk>/delete/', accounts.remove_address),
  path('api/checkout/', accounts.checkout),
 ]
+
+urlpatterns += [path('api/categories/', views.categories), path('shop/', views.shop_page), path('shop/<path:category_path>/', views.shop_page)]

@@ -24,14 +24,14 @@ class PublisherTests(unittest.TestCase):
         self.assertFalse((self.output/'blog/whey-concentrate-vs-isolate/index.html').exists())
         self.assertNotIn('whey-concentrate-vs-isolate',(self.output/'sitemap.xml').read_text())
         self.assertEqual(len(self.run_publish()['published']),1)
-        self.assertEqual(len(self.run_publish(self.now+timedelta(hours=47,minutes=59))['published']),1)
-        state=self.run_publish(self.now+timedelta(hours=48));self.assertEqual(len(state['published']),2)
+        self.assertEqual(len(self.run_publish(self.now+timedelta(hours=23,minutes=59))['published']),1)
+        state=self.run_publish(self.now+timedelta(hours=24));self.assertEqual(len(state['published']),2)
         self.assertTrue((self.output/'blog/whey-concentrate-vs-isolate/index.html').exists())
         state=self.run_publish(self.now+timedelta(days=30));self.assertEqual(len(state['published']),3)
         self.assertEqual(len(self.run_publish(self.now+timedelta(days=30))['published']),3)
         self.assertEqual(len(self.run_publish(self.now-timedelta(days=1))['published']),3)
     def test_all_articles_render_and_queue_stops(self):
-        for day in range(0,200,2):
+        for day in range(100):
             state=self.run_publish(self.now+timedelta(days=day))
         self.assertEqual(len(state['published']),100)
         self.assertEqual(len(list((self.output/'blog').glob('*/index.html'))),100)

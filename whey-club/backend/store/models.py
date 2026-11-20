@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from .categories import Category, CategoryRoute
 
 class Address(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -33,6 +34,7 @@ class Product(models.Model):
         BLEND='blend','وی ترکیبی'
         CREATINE='creatine','کراتین'
         SHAKER='shaker','شیکر / لوازم جانبی'
+    category_node=models.ForeignKey(Category,on_delete=models.PROTECT,null=True,blank=True,related_name='products',verbose_name='دسته محصول')
     name=models.CharField('نام محصول',max_length=180)
     slug=models.SlugField('نشانی انگلیسی محصول',max_length=180,unique=True,blank=True,help_text='اختیاری؛ اگر خالی باشد نشانی یکتا ساخته می‌شود. بعد از ثبت ثابت می‌ماند.')
     brand=models.CharField('برند',max_length=100,default='WHEY CLUB')
@@ -91,7 +93,7 @@ class Product(models.Model):
         if not isinstance(self.nutrition,dict) or any(k not in ['scoop','kcal','protein','carbs','fat','sugar','creatine'] or type(v) not in (int,float) or not math.isfinite(v) or v<0 for k,v in self.nutrition.items()):errors['nutrition']='مقادیر تغذیه باید عددی و نامنفی باشند و فقط کلیدهای scoop، kcal، protein، carbs، fat، sugar مجازند.'
         if errors:raise ValidationError(errors)
     def as_catalog(self):
-        return {'id':self.pk,'slug':self.slug,'name':self.name,'en':self.brand_line or self.brand,'goals':self.goals,'brand':self.brand,'type':self.protein_type,'flavor':self.flavor,'flavorName':self.flavor_name,'color':self.color,'size':self.package_size,'price':self.price,'old':self.compare_at_price or 0,'protein':self.protein_grams,'servings':self.servings,'popular':self.popular,'description':self.description,'image_url':self.image_url,'stock':self.stock,'available':self.stock is None or self.stock>0,'category':('accessory' if self.protein_type=='shaker' else 'creatine' if self.protein_type=='creatine' else 'whey'),'nutrition':dict(self.nutrition or {},protein=self.protein_grams),'ingredients':self.ingredients,'allergens':self.allergens,'usage':self.usage,'irc':self.irc_code,'batch':self.batch,'expiry':self.expiry,'pitch':self.description,'is_demo':self.is_demo}
+        return {'id':self.pk,'category_id':self.category_node_id,'slug':self.slug,'name':self.name,'en':self.brand_line or self.brand,'goals':self.goals,'brand':self.brand,'type':self.protein_type,'flavor':self.flavor,'flavorName':self.flavor_name,'color':self.color,'size':self.package_size,'price':self.price,'old':self.compare_at_price or 0,'protein':self.protein_grams,'servings':self.servings,'popular':self.popular,'description':self.description,'image_url':self.image_url,'stock':self.stock,'available':self.stock is None or self.stock>0,'category':('accessory' if self.protein_type=='shaker' else 'creatine' if self.protein_type=='creatine' else 'whey'),'nutrition':dict(self.nutrition or {},protein=self.protein_grams),'ingredients':self.ingredients,'allergens':self.allergens,'usage':self.usage,'irc':self.irc_code,'batch':self.batch,'expiry':self.expiry,'pitch':self.description,'is_demo':self.is_demo}
 
 class OrderQuerySet(models.QuerySet):
     def verified_sales(self):

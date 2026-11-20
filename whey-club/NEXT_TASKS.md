@@ -9,6 +9,8 @@ Work through these in order, one at a time, when requested. None is started by t
 - [ ] 5. Account management
 
 - [ ] 6. Product page review and design (deferred)
-- [ ] 7. Product category navigation and routes — category-only navigation without a «صفحه اصلی» item; use `/shop/` as the root and preserve meaningful parent/child order in URLs. Category changes must update navigation and routes together, with redirects for previous URLs. Reference: https://fitamino.ir/
+- [x] 7. Product category navigation and routes — category-only navigation without a «صفحه اصلی» item; use `/shop/` as the root and preserve meaningful parent/child order in URLs. Category changes must update navigation and routes together, with redirects for previous URLs. Reference: https://fitamino.ir/
 
 Storefront slideshow: opening carousel added with temporary slides; replace with owner-provided images later. Other storefront changes remain deferred.
+
+- [x] Article scheduler repaired — one queued article every 24 hours; persistent history preserved.

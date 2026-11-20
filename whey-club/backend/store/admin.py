@@ -9,7 +9,7 @@ from django.db.models import Sum,Count,Q,F,Value,BigIntegerField,ExpressionWrapp
 from django.db.models.functions import Coalesce
 from django.utils import timezone
 from django.utils.html import format_html
-from .models import Product,Order,OrderItem,CheckoutDraft
+from .models import Product,Order,OrderItem,CheckoutDraft,Category
 
 admin.site.site_header='مدیریت وی کلاب'
 admin.site.site_title='وی کلاب'
@@ -38,10 +38,10 @@ def product_report(queryset):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display=('name','brand','protein_type','price','stock','is_active','units_sold','sales_total')
-    list_filter=('is_active','protein_type','flavor','brand')
+    list_filter=('is_active','category_node','protein_type','flavor','brand')
     search_fields=('name','slug','brand')
     fieldsets=(
-        ('مشخصات اصلی',{'fields':('name','slug','brand','protein_type','flavor','flavor_name','package_size','price','compare_at_price','protein_grams','servings')}),
+        ('مشخصات اصلی',{'fields':('name','slug','brand','category_node','protein_type','flavor','flavor_name','package_size','price','compare_at_price','protein_grams','servings')}),
         ('تصویر، موجودی و نمایش',{'fields':('image_url','color','stock','is_active','popular','is_demo')}),
         ('اطلاعات تکمیلی',{'fields':('description','nutrition','ingredients','allergens','usage','irc_code','batch','expiry','brand_line','goals'),'classes':('collapse',)}),
         ('زمان تغییر',{'fields':('updated_at',),'classes':('collapse',)}),
@@ -120,3 +120,13 @@ def dashboard(request,extra_context=None):
         context['unpaid_drafts']=CheckoutDraft.objects.filter(status='awaiting_gateway').count()
     return _original_index(request,extra_context=context)
 admin.site.index=dashboard
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display=('name','parent','position','route')
+    list_editable=('position',)
+    fields=('name','slug','parent','position','route')
+    readonly_fields=('route',)
+    prepopulated_fields={'slug':('name',)}
+    @admin.display(description='نشانی دسته (خودکار)')
+    def route(self,obj):return obj.get_absolute_url() if obj.pk else 'پس از ذخیره ساخته می‌شود'

@@ -35,24 +35,24 @@ For updates, upload the contents of `dist/` into `/opt/whey-club/site/`; static 
 
 The supplied 100-article package is imported into `content/articles.json`. Public journal: `http://45.149.78.179/blog/`. Each article has a static HTML URL, unique title/meta description, canonical URL, Article structured data, sources, table of contents, publication date, related published articles, and a shop link. The journal supports Persian search/category filters; the homepage shows up to three published articles. No medical reviewer is invented; articles disclose that they were AI-assisted and not medically reviewed.
 
-`publish_articles.py` uses only Python's standard library. The first run publishes article 1 immediately. Each subsequent article becomes eligible 48 hours after the preceding actual publication. A persistent systemd timer checks every five minutes, so publication can be up to five minutes after the interval. Missed intervals do not cause bulk publishing: after downtime it publishes at most one article, then waits another 48 hours. After article 100 it stops adding articles. A lock prevents concurrent publications, atomic file writes protect pages, and publication history persists across restarts and content deployments.
+`publish_articles.py` uses only Python's standard library. The first run publishes article 1 immediately. Each subsequent article becomes eligible 24 hours after the preceding actual publication. A persistent systemd timer checks every five minutes, so publication can be up to five minutes after the interval. Missed intervals do not cause bulk publishing: after downtime it publishes at most one article, then waits another 24 hours. After article 100 it stops adding articles. A lock prevents concurrent publications, atomic file writes protect pages, and publication history persists across restarts and content deployments.
 
 Server paths:
 
-- Private queue and script: `/opt/whey-club/publisher/{content,scripts}` (outside Nginx's document root).
+- Private queue and script: `/opt/whey-club/application/{content,scripts}` (outside Nginx's document root).
 - Persistent dates/history: `/var/lib/whey-club-publisher/publication.json` (never overwrite during deployment).
 - Generated public pages: `/opt/whey-club/site/blog/`, `sitemap.xml`, and `robots.txt`.
 - Schedule: `whey-club-publisher.timer`; execution/logs: `whey-club-publisher.service`.
 
 Inspect: `systemctl list-timers whey-club-publisher.timer` and `journalctl -u whey-club-publisher.service`.
 Pause: `systemctl disable --now whey-club-publisher.timer`. Resume: `systemctl enable --now whey-club-publisher.timer`.
-The timer's status shows the next **check**, not the next article. The next article is due 48 hours after the last `published_at` value in the state file.
+The timer's status shows the next **check**, not the next article. The next article is due 24 hours after the last `published_at` value in the state file.
 
 To rebuild published pages after editing the private queue, run:
 
 ```sh
-python3 /opt/whey-club/publisher/scripts/publish_articles.py \
-  --source /opt/whey-club/publisher/content/articles.json \
+python3 /opt/whey-club/application/scripts/publish_articles.py \
+  --source /opt/whey-club/application/content/articles.json \
   --output /opt/whey-club/site \
   --state-dir /var/lib/whey-club-publisher \
   --origin http://45.149.78.179 --rebuild
@@ -62,7 +62,7 @@ The same origin is configured in the publisher service; update it when a real do
 
 Local journal preview: run `python3 scripts/publish_articles.py --source content/articles.json --output dist --state-dir .publication-state --origin http://localhost:5173`, then start the local HTTP server. Generated journal files and local state are ignored by Git.
 
-Validation: `python3 -m unittest discover -s whey-club/tests -v` from the repository root. Tests cover all 100 rendered pages, the 48-hour boundary, idempotency, clock rollback, downtime, queue exhaustion, rebuilds, HTML escaping, and future article privacy. The storefront remains a demo catalog with checkout disabled.
+Validation: `python3 -m unittest discover -s whey-club/tests -v` from the repository root. Tests cover all 100 rendered pages, the 24-hour boundary, idempotency, clock rollback, downtime, queue exhaustion, rebuilds, HTML escaping, and future article privacy. The storefront remains a demo catalog with checkout disabled.
 
 ## Color palette and page URLs
 

@@ -1,4 +1,5 @@
-import React from 'react';
+import React,{useEffect} from 'react';
+import CategoryMenu from './CategoryMenu.jsx';
 import homepage from './pages/index.html?raw';
 import '../public/luxe.css';
 
@@ -7,14 +8,11 @@ const header = template.querySelector('header');
 header.querySelector('.cart-button').insertAdjacentHTML('beforebegin', '<a class="account-link" href="/account/">ورود / حساب من</a>');
 
 export default function SiteLayout({children}) {
- let count = 0;
- try {
-  count = Object.values(JSON.parse(localStorage.getItem('wheyclub-cart') || '{}')).filter(n => Number.isInteger(n) && n > 0 && n <= 99).reduce((sum, n) => sum + n, 0);
- } catch {}
- header.querySelector('#cartCount').textContent = count.toLocaleString('fa-IR');
+ useEffect(()=>{const update=()=>{try{const count=Object.values(JSON.parse(localStorage.getItem('wheyclub-cart')||'{}')).filter(n=>Number.isInteger(n)&&n>0&&n<=99).reduce((a,b)=>a+b,0);const badge=document.querySelector('#cartCount');if(badge)badge.textContent=count.toLocaleString('fa-IR')}catch{}};update();window.addEventListener('whey-cart-change',update);return()=>window.removeEventListener('whey-cart-change',update)});
  return <>
   <div className="trust-bar" role="note" dangerouslySetInnerHTML={{__html: template.querySelector('.trust-bar').innerHTML}}/>
   <header dangerouslySetInnerHTML={{__html: header.innerHTML}}/>
+  <CategoryMenu/>
   {children}
   <footer className="site-footer" dangerouslySetInnerHTML={{__html: template.querySelector('footer').innerHTML}}/>
  </>;

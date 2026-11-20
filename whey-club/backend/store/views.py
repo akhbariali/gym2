@@ -72,11 +72,47 @@ def sitemap(request):
     if existing.exists():
         try:paths.extend(urlsplit(n.text).path for n in ET.parse(existing).iter('{http://www.sitemaps.org/schemas/sitemap/0.9}loc') if n.text and urlsplit(n.text).path.startswith('/blog/'))
         except ET.ParseError:pass
+    from .models import Category
+    paths=[p for p in paths if not p.startswith('/shop/') or p=='/shop/']
+    paths.extend(c.get_absolute_url() for c in Category.objects.all())
     paths.extend(p.get_absolute_url() for p in Product.objects.filter(is_active=True))
     ns='http://www.sitemaps.org/schemas/sitemap/0.9';ET.register_namespace('',ns)
     root=ET.Element('{'+ns+'}urlset')
     for path in dict.fromkeys(paths):
         url=ET.SubElement(root,'{'+ns+'}url');ET.SubElement(url,'{'+ns+'}loc').text=request.build_absolute_uri(path)
     response=HttpResponse(ET.tostring(root,encoding='utf-8',xml_declaration=True),content_type='application/xml')
+    response['Cache-Control']='no-cache'
+    return response
+
+@require_GET
+def categories(request):
+    from .models import Category
+    response=JsonResponse({'results':[{'id':c.pk,'name':c.name,'parent_id':c.parent_id,'url':c.get_absolute_url(),'position':c.position} for c in Category.objects.select_related('parent')]})
+    response['Cache-Control']='no-cache'
+    return response
+
+@require_GET
+def shop_page(request,category_path=''):
+    from .models import Category,CategoryRoute
+    from django.http import HttpResponsePermanentRedirect
+    category=None
+    if category_path:
+        route=get_object_or_404(CategoryRoute.objects.select_related('category'),path='/shop/'+category_path+'/')
+        category=route.category
+        if route.path!=category.get_absolute_url():
+            query=request.META.get('QUERY_STRING','')
+            return HttpResponsePermanentRedirect(category.get_absolute_url()+('?' + query if query else ''))
+    all_categories=list(Category.objects.all())
+    ids={category.pk} if category else {c.pk for c in all_categories}
+    if category:
+        while True:
+            expanded=ids|{c.pk for c in all_categories if c.parent_id in ids}
+            if expanded==ids:break
+            ids=expanded
+    items=Product.objects.filter(is_active=True)
+    if category:items=items.filter(category_node_id__in=ids)
+    entry_file=settings.FRONTEND_ROOT/'react-entry.json'
+    entry=json.loads(entry_file.read_text()) if entry_file.exists() else {'src':'','styles':[]}
+    response=render(request,'store/shop_shell.html',{'title':category.name if category else 'همه محصولات','category':category,'categories':all_categories,'products':items,'entry':entry,'canonical':request.build_absolute_uri(category.get_absolute_url() if category else '/shop/')})
     response['Cache-Control']='no-cache'
     return response

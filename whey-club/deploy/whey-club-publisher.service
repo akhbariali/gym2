@@ -1,10 +1,10 @@
 [Unit]
-Description=Publish one WHEY CLUB article when the 48-hour interval is due
+Description=Publish one WHEY CLUB article when the 24-hour interval is due
 After=network.target
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/python3 /opt/whey-club/publisher/scripts/publish_articles.py --source /opt/whey-club/publisher/content/articles.json --output /opt/whey-club/site --state-dir /var/lib/whey-club-publisher --origin http://45.149.78.179
+ExecStart=/usr/bin/python3 /opt/whey-club/application/scripts/publish_articles.py --source /opt/whey-club/application/content/articles.json --output /opt/whey-club/site --state-dir /var/lib/whey-club-publisher --origin https://wheyclub.ir
 StateDirectory=whey-club-publisher
 UMask=0022
 NoNewPrivileges=yes

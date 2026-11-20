@@ -26,7 +26,7 @@ npm run dev
 
 Visit http://localhost:5174. Vite proxies `/api/` to Django on port 8001. API endpoints: `/api/products/`, `/api/articles/`, `/api/articles/<descriptive-slug>/`, `/api/health/`.
 
-Production must configure `DJANGO_SECRET_KEY`, `DJANGO_DEBUG=0`, `DJANGO_ALLOWED_HOSTS`, and `WHEY_PUBLICATION_STATE=/var/lib/whey-club-publisher/publication.json`. Configure `/api/` to Django and other routes to the React build's index.html. Existing assets are served from the React build. Keep the existing publication timer and state file; it remains the authority for the two-day release schedule.
+Production must configure `DJANGO_SECRET_KEY`, `DJANGO_DEBUG=0`, `DJANGO_ALLOWED_HOSTS`, and `WHEY_PUBLICATION_STATE=/var/lib/whey-club-publisher/publication.json`. Configure `/api/` to Django and other routes to the React build's index.html. Existing assets are served from the React build. Keep the existing publication timer and state file; it remains the authority for the daily release schedule.
 
 Do not put the private article queue in frontend assets. The API reads it from `content/` on the backend. Preserve existing Nginx legacy article redirects when switching deployments. After the React build, run `python3 scripts/prerender_frontend.py`. The publisher also adds the React entry point to newly generated journal pages, preserving searchable HTML.
 
