@@ -9,7 +9,7 @@ from django.db import IntegrityError, transaction
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
 from django.views.decorators.http import require_GET, require_POST, require_http_methods
-from .models import Address, CheckoutDraft
+from .models import Address, CheckoutDraft, Product
 from .views import load
 
 def fail(message,status=400): return JsonResponse({'error':message},status=status)
@@ -27,10 +27,10 @@ def data(request):
         return result
     except (ValueError,UnicodeError):raise ValueError('اطلاعات ارسالی معتبر نیست.')
 
-def limited(request):
+def limited(request,prefix='auth'):
     # A single Gunicorn worker shares this cache across its threads. Never log credentials.
     import hashlib
-    key='auth:'+hashlib.sha256(request.META.get('HTTP_X_FORWARDED_FOR',request.META.get('REMOTE_ADDR','')).encode()).hexdigest()
+    key=prefix+':' +hashlib.sha256(request.META.get('HTTP_X_FORWARDED_FOR',request.META.get('REMOTE_ADDR','')).encode()).hexdigest()
     if cache.add(key,1,300):return False
     try:return cache.incr(key)>20
     except ValueError:return False
@@ -110,11 +110,13 @@ def checkout(request):
         address=Address.objects.filter(pk=d.get('address_id'),user=request.user).first()
         if not address:return fail('یک نشانی متعلق به حساب خود انتخاب کنید.',400)
         if not isinstance(items,list) or not 1<=len(items)<=30:raise ValueError('سبد خرید معتبر نیست.')
-        catalog={p['id']:p for p in load('products.json')};normalized=[];seen=set();total=0
+        catalog={p.pk:p.as_catalog() for p in Product.objects.filter(is_active=True)};normalized=[];seen=set();total=0
         for item in items:
             pid=item.get('id');qty=item.get('quantity')
             if type(pid)!=int or pid not in catalog or pid in seen or type(qty)!=int or not 1<=qty<=99:raise ValueError('تعداد یا محصول سبد خرید معتبر نیست.')
-            p=catalog[pid];seen.add(pid);total+=p['price']*qty
+            p=catalog[pid]
+            if p['stock'] is not None and qty>p['stock']:raise ValueError('موجودی محصول کافی نیست.')
+            seen.add(pid);total+=p['price']*qty
             normalized.append({'id':pid,'name':p['name'],'quantity':qty,'price':p['price']})
         normalized.sort(key=lambda p:p['id']);snapshot=address_json(address)
         with transaction.atomic():

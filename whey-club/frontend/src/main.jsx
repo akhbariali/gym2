@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import Account from './Account.jsx';
+import ProductPage from './ProductPage.jsx';
 import site from '../../content/site.json';
 // Preserve the existing page markup while React owns rendering and API loading.
 const pages = import.meta.glob('./pages/**/index.html', {query:'?raw',import:'default'});
@@ -35,4 +36,4 @@ function Journal(){
  if(!items)return <p className="wrap">در حال بارگذاری…</p>;
  return <><header className="wrap blog-header"><a className="logo" href="/">WHEY CLUB</a><a href="/shop/">فروشگاه</a><a href="/blog/">مجله وی کلاب</a></header><main className="wrap blog-main">{items.results?<><h1>مجله وی کلاب</h1><div className="editorial-grid">{items.results.map(a=><a className="editorial-card editorial-body" key={a.slug} href={'/blog/'+(a.url_slug||a.slug)+'/'}><span>{a.category} · حدود ۲ دقیقه مطالعه</span><h2>{a.title}</h2><p>{a.meta_description}</p></a>)}</div></>:<article className="prose"><h1>{items.title}</h1><p>حدود ۲ دقیقه مطالعه · تحریریه وی کلاب</p>{items.content_markdown.split(/\n\n/).filter(p=>!p.startsWith('# ')).map((p,i)=>p.startsWith('##')?<h2 key={i}>{p.replace(/^#+ /,'')}</h2>:<p key={i}>{p}</p>)}<p className="editorial-disclosure">این مطلب آموزشی با کمک هوش مصنوعی تهیه شده و بازبینی تخصصی پزشکی نشده است.</p><h2>منابع</h2>{items.sources.map(s=><p key={s}><a href={s} rel="noopener noreferrer">{s}</a></p>)}</article>}</main></>;
 }
-createRoot(document.getElementById('root')).render((location.pathname.startsWith('/account')||location.pathname==='/checkout/')?<Account/>:location.pathname.startsWith('/blog')?<Journal/>:<Storefront/>);
+createRoot(document.getElementById('root')).render((location.pathname.startsWith('/account')||location.pathname==='/checkout/')?<Account/>:location.pathname.startsWith('/products/')?<ProductPage/>:location.pathname.startsWith('/blog')?<Journal/>:<Storefront/>);

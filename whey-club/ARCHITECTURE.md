@@ -1,7 +1,7 @@
 # Frontend/backend separation
 
 - `frontend/`: React + Vite. Existing storefront layouts, styles, imagery, video, cart behavior, and URL structure are retained. Shop layouts are currently imported HTML templates rendered by React, with the original interaction script; these can be converted into smaller React components incrementally. Journal pages use React components and Django API data.
-- `backend/`: Django API. Products and article content come from the existing content JSON files. Only articles in the persistent publication history are exposed. Existing article IDs and publication dates remain unchanged.
+- `backend/`: Django API. Products are managed in PostgreSQL through `/admin/`; article content remains in the existing private JSON publishing queue. Only articles in the persistent publication history are exposed. Existing article IDs and publication dates remain unchanged.
 - Existing `dist/`, deployment files, and publishing service remain intact for rollback. The develop deployment runs Django on loopback port 8089 behind the existing isolated storefront on 80.
 
 ## Development
@@ -55,3 +55,5 @@ Checkout validates ownership, product IDs and quantities, computes prices on the
 Production account and checkout APIs require HTTPS (`ACCOUNT_REQUIRE_HTTPS`); the public HTTP account screens display an HTTPS-required message. Do not disable this guard for real users. Domain DNS currently is not ready. Once TLS is configured, set the domain in allowed hosts, configure trusted reverse-proxy HTTPS detection, and keep secure cookies enabled. Local development over localhost works without this production guard. There is no email verification/password-reset email service yet; registration states this explicitly.
 
 Run account/ownership/CSRF/checkout/throttle tests using `python manage.py test store`. Rate limiting uses Django's process-shared local-memory cache for the single-worker deployment; adopt a shared cache before increasing Gunicorn workers. Nginx overwrites X-Forwarded-For to prevent spoofing; configure trusted CDN real-IP handling before routing account traffic through a CDN.
+
+Store operations and deployment details: [ADMIN.md](ADMIN.md). Only the admin-panel checklist item is completed in this change; storefront redesign, eNAMAD, selected text removal and account-management work remain pending.
