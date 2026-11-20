@@ -1,0 +1,82 @@
+{
+  "fa-fitness-001": {
+    "cover": {
+      "url": "/assets/journal-photo-1775199603089-e953f3716737.webp",
+      "alt": "پودر پروتئین وی در کنار ظرف مکمل و پیمانه",
+      "creator": "Alex Saks",
+      "source": "https://unsplash.com/photos/whey-protein-powder-next-to-a-shaker-bottle-Th8hUxHm-kY",
+      "license": "https://unsplash.com/license"
+    },
+    "inline": {
+      "url": "/assets/journal-photo-1775199603318-7f8a9a63b40d.webp",
+      "alt": "شیکر حاوی نوشیدنی پروتئینی در کنار ظرف وی",
+      "creator": "Alex Saks",
+      "source": "https://unsplash.com/photos/whey-protein-container-and-shaker-bottle-with-drink-PSiWzYyLwuQ",
+      "license": "https://unsplash.com/license"
+    }
+  },
+  "fa-fitness-002": {
+    "cover": {
+      "url": "/assets/journal-photo-1693996045899-7cf0ac0229c7.webp",
+      "alt": "ظرف پروتئین و پیمانه پودر برای بررسی نوع مکمل",
+      "creator": "Alex Saks",
+      "source": "https://unsplash.com/photos/a-jar-of-protein-powder-next-to-a-scoop-of-powder-R23MqZKCBcM",
+      "license": "https://unsplash.com/license"
+    },
+    "inline": {
+      "url": "/assets/journal-photo-1693996045346-d0a9b9470909.webp",
+      "alt": "پودر وی و پیمانه در کنار بسته پروتئین",
+      "creator": "Alex Saks",
+      "source": "https://unsplash.com/photos/a-jar-of-protein-powder-next-to-a-spoon-_a6dW14spss",
+      "license": "https://unsplash.com/license"
+    }
+  },
+  "fa-fitness-003": {
+    "cover": {
+      "url": "/assets/journal-photo-1680265158261-5fd6ba5d9959.webp",
+      "alt": "پیمانه پودر هیدرو پروتئین در مقابل ظرف مکمل",
+      "creator": "gold touch nutrition",
+      "source": "https://unsplash.com/photos/a-jar-of-hydro-protein-and-a-spoon-on-a-table-RB5aw1rOG3k",
+      "license": "https://unsplash.com/license"
+    },
+    "inline": {
+      "url": "/assets/journal-photo-1774793476396-de61c6d0fa20.webp",
+      "alt": "پودر پروتئین وی و پیمانه روی میز چوبی",
+      "creator": "Alex Saks",
+      "source": "https://unsplash.com/photos/whey-protein-powder-spilled-next-to-a-container-and-scoop-yxnVewxSvGQ",
+      "license": "https://unsplash.com/license"
+    }
+  },
+  "fa-fitness-004": {
+    "cover": {
+      "url": "/assets/journal-photo-1693996045838-980674653385.webp",
+      "alt": "شیک پروتئینی و مکمل‌های ورزشی برای برنامه تمرین",
+      "creator": "Alex Saks",
+      "source": "https://unsplash.com/photos/three-containers-of-protein-powder-next-to-a-blender-7lQ1m08Z7eE",
+      "license": "https://unsplash.com/license"
+    },
+    "inline": {
+      "url": "/assets/journal-photo-1775199603318-7f8a9a63b40d.webp",
+      "alt": "شیکر آماده پروتئین وی برای مصرف در طول روز",
+      "creator": "Alex Saks",
+      "source": "https://unsplash.com/photos/whey-protein-container-and-shaker-bottle-with-drink-PSiWzYyLwuQ",
+      "license": "https://unsplash.com/license"
+    }
+  },
+  "fa-fitness-005": {
+    "cover": {
+      "url": "/assets/journal-photo-1704650311190-7eeb9c4f6e11.webp",
+      "alt": "ظرف پروتئین و پیمانه پودر در کنار آن",
+      "creator": "Alex Saks",
+      "source": "https://unsplash.com/photos/a-jar-of-protein-powder-next-to-a-scoop-of-protein-powder-DvunqLOsKco",
+      "license": "https://unsplash.com/license"
+    },
+    "inline": {
+      "url": "/assets/journal-photo-1775199603089-e953f3716737.webp",
+      "alt": "پودر پروتئین وی در کنار ظرف مکمل",
+      "creator": "Alex Saks",
+      "source": "https://unsplash.com/photos/whey-protein-powder-next-to-a-shaker-bottle-Th8hUxHm-kY",
+      "license": "https://unsplash.com/license"
+    }
+  }
+}

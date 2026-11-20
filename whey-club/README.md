@@ -45,6 +45,10 @@ Server paths:
 - Schedule: `whey-club-publisher.timer`; execution/logs: `whey-club-publisher.service`.
 
 Inspect: `systemctl list-timers whey-club-publisher.timer` and `journalctl -u whey-club-publisher.service`.
+
+Keep the WHEY CLUB wordmark lettering and its Barlow Condensed weights (800 / 700) unchanged during shared header and footer edits.
+
+To recover intentionally from missed days, back up `publication.json` and run the publisher command below with `--backfill`. It fills elapsed 24-hour slots from the first publication, keeps late dates in `original_published_at`, and leaves future articles queued. Do not add this flag to the timer.
 Pause: `systemctl disable --now whey-club-publisher.timer`. Resume: `systemctl enable --now whey-club-publisher.timer`.
 The timer's status shows the next **check**, not the next article. The next article is due 24 hours after the last `published_at` value in the state file.
 

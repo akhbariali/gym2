@@ -1,4 +1,5 @@
 import React,{useEffect,useRef,useState} from 'react';
+import SiteLayout from './SiteLayout.jsx';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import '../public/luxe.css';
@@ -19,7 +20,7 @@ function PinMap({onChange}){
  return <div ref={el} className="address-map" aria-label="برای انتخاب موقعیت روی نقشه کلیک کنید"/>;
 }
 const backLink=<a className="auth-back" href="/"><span dir="ltr">WHEY<span>CLUB</span></span><span>بازگشت به فروشگاه ←</span></a>;
-function Shell({children,checkout=false}){if(!checkout)return <div className="auth-page account-page"><main className="wrap account-main">{backLink}{children}</main></div>;return <><header className="wrap account-header"><a className="logo" href="/">WHEY CLUB</a><nav><a href="/shop/whey-protein/">فروشگاه</a><a href="/blog/">مجله</a><a href="/cart/">سبد خرید</a><a href="/account/">حساب من</a></nav></header><main className="wrap account-main">{children}</main><footer className="wrap"><span>وی کلاب · همراه هر روز تو</span><a href="/shop/whey-protein/">بازگشت به فروشگاه ←</a></footer></>}
+function Shell({children,checkout=false}){return <SiteLayout textWordmark={checkout}><div className={checkout?undefined:"auth-page account-page"}><main className="wrap account-main">{!checkout&&backLink}{children}</main></div></SiteLayout>}
 export default function Account(){
  const [session,setSession]=useState(null),[error,setError]=useState(''),[busy,setBusy]=useState(false),[addresses,setAddresses]=useState([]),[mapOpen,setMapOpen]=useState(false),[pin,setPin]=useState({latitude:null,longitude:null}),[notice,setNotice]=useState(''),[chosen,setChosen]=useState(''),[products,setProducts]=useState([]),[draft,setDraft]=useState(null);
  const path=location.pathname,register=path.includes('/register'),auth=register||path.includes('/login'),checkout=path==='/checkout/';

@@ -68,22 +68,39 @@ def shell(title, description, body, origin, path, schema=None):
 def card(article, date):
     return f'''<a class="editorial-card" href="{esc(article_path(article))}" data-category="{esc(article['category'])}"><div class="editorial-art art-{int(article['id'])%4}"><span>WHEY CLUB JOURNAL</span><b>{int(article['id']):02d}</b><i>↗</i></div><div class="editorial-body"><div class="article-category">{esc(article['category'])} <span>حدود ۲ دقیقه مطالعه</span></div><h2>{esc(article['title'])}</h2><p>{esc(article['meta_description'])}</p><div class="read-link"><time datetime="{esc(date)}">{esc(date[:10])}</time><span>مطالعه مقاله ←</span></div></div></a>'''
 
-def render(articles, published, output, origin):
+def photo_figure(photo, lazy=False):
+    source = photo['url']
+    if not re.fullmatch(r'/assets/journal-[a-z0-9-]+\.webp', source):
+        raise ValueError('Expected a local journal image')
+    loading = ' loading="lazy"' if lazy else ''
+    return f'<figure class="journal-photo"><img src="{esc(source)}" alt="{esc(photo["alt"])}"{loading} decoding="async"><figcaption><a href="{esc(photo["source"])}">{esc(photo["creator"])}</a> · <a href="{esc(photo["license"])}">مجوز تصویر</a></figcaption></figure>'
+
+def render(articles, published, output, origin, photos=None):
     lookup={a['slug']:a for a in articles}
     chosen=[(lookup[p['slug']],p['published_at']) for p in published]
     output=Path(output)
     for article, date in chosen:
         content,toc=markdown(article['content_markdown'])
+        cover = ''
+        pair = (photos or {}).get(article['slug'])
+        if pair:
+            cover = photo_figure(pair['cover'])
+            inline_photo = photo_figure(pair['inline'], lazy=True)
+            sections = content.split('\n<h2 ', 2)
+            if len(sections) == 3:
+                content = '\n<h2 '.join([sections[0], sections[1] + inline_photo, sections[2]])
+            else:
+                content += inline_photo
         path=article_path(article)
         related=sorted([(a,d) for a,d in chosen if a['slug']!=article['slug']],key=lambda pair:pair[0]['category']!=article['category'])[:3]
         related_html='<section class="related"><div class="kicker">KEEP LEARNING</div><h2>یک قدم بیشتر بدان</h2><div class="editorial-grid">'+''.join(card(a,d) for a,d in related)+'</div></section>' if related else ''
-        body=f'''<div class="breadcrumbs"><a href="/">خانه</a> / <a href="/blog/">مجله وی کلاب</a> / <a href="{category_path(article['category'])}">{esc(article['category'])}</a></div><header class="article-heading"><div class="kicker">THE TWO-MINUTE READ</div><div class="article-category">{esc(article['category'])}</div><h1>{esc(article['title'])}</h1><div class="article-byline">تحریریه وی کلاب <span>·</span> <time datetime="{esc(date)}">{esc(date[:10])}</time><span>·</span> حدود ۲ دقیقه مطالعه</div></header><div class="article-layout"><article class="prose">{content}<div class="editorial-disclosure">درباره این مطلب: متن آموزشی تهیه‌شده با کمک هوش مصنوعی است و بازبینی تخصصی پزشکی نشده است. منابع برای مطالعه بیشتر هستند.</div><a class="article-return" href="/blog/">← همه مقاله‌های مجله</a></article><aside class="article-aside"><div class="kicker">IN THIS ARTICLE</div><h3>در این مقاله می‌خوانید</h3>{''.join('<a href="#'+ident+'">'+esc(label)+'</a>' for ident,label in toc)}<div class="reading-cta"><b>انتخاب آگاهانه، تمرین بهتر.</b><p>انواع پروتئین وی رو مقایسه کن.</p><a href="/shop/whey-protein/">دیدن پروتئین‌های وی ←</a></div></aside></div>{related_html}'''
+        body=f'''<div class="breadcrumbs"><a href="/">خانه</a> / <a href="/blog/">مجله وی کلاب</a> / <a href="{category_path(article['category'])}">{esc(article['category'])}</a></div><header class="article-heading"><div class="kicker">THE TWO-MINUTE READ</div><div class="article-category">{esc(article['category'])}</div><h1>{esc(article['title'])}</h1><div class="article-byline">تحریریه وی کلاب <span>·</span> <time datetime="{esc(date)}">{esc(date[:10])}</time><span>·</span> حدود ۲ دقیقه مطالعه</div></header>{cover}<div class="article-layout"><article class="prose">{content}<div class="editorial-disclosure">درباره این مطلب: متن آموزشی تهیه‌شده با کمک هوش مصنوعی است و بازبینی تخصصی پزشکی نشده است. منابع برای مطالعه بیشتر هستند.</div><a class="article-return" href="/blog/">← همه مقاله‌های مجله</a></article><aside class="article-aside"><div class="kicker">IN THIS ARTICLE</div><h3>در این مقاله می‌خوانید</h3>{''.join('<a href="#'+ident+'">'+esc(label)+'</a>' for ident,label in toc)}<div class="reading-cta"><b>انتخاب آگاهانه، تمرین بهتر.</b><p>انواع پروتئین وی رو مقایسه کن.</p><a href="/shop/whey-protein/">دیدن پروتئین‌های وی ←</a></div></aside></div>{related_html}'''
         schema={'@context':'https://schema.org','@type':'Article','headline':article['title'],'description':article['meta_description'],'inLanguage':'fa','datePublished':date,'dateModified':date,'author':{'@type':'Organization','name':'تحریریه وی کلاب'},'publisher':{'@type':'Organization','name':'WHEY CLUB'},'mainEntityOfPage':origin+path,'citation':article['sources'],'timeRequired':'PT2M'}
         atomic(output/path.lstrip('/')/'index.html',shell(article['seo_title'],article['meta_description'],body,origin,path,schema))
     categories=list(dict.fromkeys(a['category'] for a,d in chosen))
     body='''<section class="journal-hero"><div><div class="kicker">THE WHEY CLUB JOURNAL</div><h1>تمرین کن. یاد بگیر.<br><em>طبیعی ادامه بده.</em></h1><p>راهنماهای کوتاه برای تمرین قابل اجرا، تغذیه روزمره و انتخاب آگاهانه مکمل؛ همراه مسیر بدنسازی طبیعی.</p><div class="journal-promise"><span>◷ حدود ۲ دقیقه مطالعه</span><span>↗ هر روز، یک مقاله تازه</span></div></div><div class="journal-graphic" dir="ltr"><span>LESS GUESSWORK.</span><b>MORE<br>KNOW<br>HOW<span>↗</span></b><small>READ. LEARN. GROW.</small></div></section>'''
-    body+='<section class="journal-list"><div class="section-heading"><div><div class="kicker">SMALL READS. BIG DIFFERENCE.</div><h2>برای یک قدم جلوتر بودن<span>.</span></h2></div><label class="article-search">⌕ <input id="articleSearch" type="search" placeholder="جستجو در مقاله‌ها…" aria-label="جستجوی مقاله‌ها"></label></div><div class="category-tabs"><a class="selected" href="/blog/">همه مقاله‌ها</a>'+''.join('<a href="'+category_path(c)+'">'+esc(c)+'</a>' for c in categories)+'</div><p id="articleCount">'+str(len(chosen))+' مقاله منتشرشده</p><div class="editorial-grid">'+''.join(card(a,d) for a,d in reversed(chosen))+'</div><p id="noArticles" hidden>مقاله‌ای با این جستجو پیدا نشد.</p></section><div class="journal-end"><b>دانش بیشتر، انتخاب بهتر.</b><span>مقاله بعدی، دو روز پس از آخرین انتشار به مجله اضافه می‌شود.</span><a href="/shop/whey-protein/">رفتن به فروشگاه ←</a></div>'
-    atomic(output/'blog/index.html',shell('مجله وی کلاب | بدنسازی طبیعی، تمرین و تغذیه','راهنماهای دو دقیقه‌ای فارسی درباره پروتئین وی، مکمل‌های ورزشی، تغذیه و بدنسازی؛ هر دو روز یک مقاله تازه.',body,origin,'/blog/'))
+    body+='<section class="journal-list"><div class="section-heading"><div><div class="kicker">SMALL READS. BIG DIFFERENCE.</div><h2>برای یک قدم جلوتر بودن<span>.</span></h2></div><label class="article-search">⌕ <input id="articleSearch" type="search" placeholder="جستجو در مقاله‌ها…" aria-label="جستجوی مقاله‌ها"></label></div><div class="category-tabs"><a class="selected" href="/blog/">همه مقاله‌ها</a>'+''.join('<a href="'+category_path(c)+'">'+esc(c)+'</a>' for c in categories)+'</div><p id="articleCount">'+str(len(chosen))+' مقاله منتشرشده</p><div class="editorial-grid">'+''.join(card(a,d) for a,d in reversed(chosen))+'</div><p id="noArticles" hidden>مقاله‌ای با این جستجو پیدا نشد.</p></section><div class="journal-end"><b>دانش بیشتر، انتخاب بهتر.</b><span>مقاله بعدی، یک روز پس از آخرین انتشار به مجله اضافه می‌شود.</span><a href="/shop/whey-protein/">رفتن به فروشگاه ←</a></div>'
+    atomic(output/'blog/index.html',shell('مجله وی کلاب | بدنسازی طبیعی، تمرین و تغذیه','راهنماهای دو دقیقه‌ای فارسی درباره پروتئین وی، مکمل‌های ورزشی، تغذیه و بدنسازی؛ هر روز یک مقاله تازه.',body,origin,'/blog/'))
     for category in categories:
         subset=[(a,d) for a,d in reversed(chosen) if a['category']==category]
         category_body='<div class="breadcrumbs"><a href="/">خانه</a> / <a href="/blog/">مجله وی کلاب</a> / '+esc(category)+'</div><section class="route-heading"><div class="kicker">LEARN. TRAIN. REPEAT.</div><h1>مقاله‌های '+esc(category)+'</h1><p>راهنماهای کوتاه، برای انتخاب‌های بهتر هر روز.</p></section><section class="journal-list"><div class="section-heading"><a href="/blog/">همه مقاله‌ها ←</a><label class="article-search">⌕ <input id="articleSearch" type="search" placeholder="جستجو در این دسته…" aria-label="جستجوی مقاله‌ها"></label></div><p id="articleCount">'+str(len(subset))+' مقاله منتشرشده</p><div class="editorial-grid">'+''.join(card(a,d) for a,d in subset)+'</div><p id="noArticles" hidden>مقاله‌ای با این جستجو پیدا نشد.</p></section>'
@@ -104,7 +121,7 @@ def render(articles, published, output, origin):
     atomic(output/'sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join('<url><loc>'+esc(origin+u)+'</loc></url>' for u in urls)+'</urlset>')
     atomic(output/'robots.txt','User-agent: *\nAllow: /\nSitemap: '+origin+'/sitemap.xml\n')
 
-def publish(source, output, state_dir, origin, now=None, rebuild=False):
+def publish(source, output, state_dir, origin, now=None, rebuild=False, backfill=False):
     now=now or datetime.now(timezone.utc)
     state_dir=Path(state_dir);state_dir.mkdir(parents=True,exist_ok=True)
     with (state_dir/'publisher.lock').open('w') as lock:
@@ -124,13 +141,31 @@ def publish(source, output, state_dir, origin, now=None, rebuild=False):
         pending=[a for a in articles if a['slug'] not in existing]
         due=not published or now>=datetime.fromisoformat(published[-1]['published_at'])+INTERVAL
         changed=False
-        if due and pending:
+        if backfill and published:
+            if [post['slug'] for post in published] != [article['slug'] for article in articles[:len(published)]]:
+                raise ValueError('Backfill requires publication history to match the start of the queue')
+            first = datetime.fromisoformat(published[0]['published_at'])
+            for index, article in enumerate(articles):
+                scheduled = first + index * INTERVAL
+                if scheduled > now:
+                    break
+                if index >= len(published):
+                    published.append({'slug':article['slug'],'published_at':scheduled.isoformat()})
+                    changed = True
+                elif datetime.fromisoformat(published[index]['published_at']) > scheduled:
+                    post = published[index]
+                    post.setdefault('original_published_at', post['published_at'])
+                    post['published_at'] = scheduled.isoformat()
+                    changed = True
+        elif due and pending:
             published.append({'slug':pending[0]['slug'],'published_at':now.isoformat()})
             changed=True
         if changed or rebuild:
-            render(articles,published,output,origin.rstrip('/'))
+            photo_manifest = Path(source).with_name('article-photos.json')
+            photos = json.loads(photo_manifest.read_text()) if photo_manifest.exists() else None
+            render(articles,published,output,origin.rstrip('/'),photos)
             atomic(state_path,json.dumps(state,ensure_ascii=False,indent=2))
-        print(json.dumps({'published':len(published),'queued':len(articles)-len(published),'new_article':published[-1]['slug'] if changed else None,'next_publication':(datetime.fromisoformat(published[-1]['published_at'])+INTERVAL).isoformat() if pending and published and len(published)<len(articles) else None}))
+        print(json.dumps({'published':len(published),'queued':len(articles)-len(published),'new_article':published[-1]['slug'] if changed else None,'next_publication':(datetime.fromisoformat(published[-1]['published_at'])+INTERVAL).isoformat() if published and len(published)<len(articles) else None}))
         return state
 
 if __name__=='__main__':
@@ -140,5 +175,6 @@ if __name__=='__main__':
     parser.add_argument('--state-dir',required=True)
     parser.add_argument('--origin',required=True)
     parser.add_argument('--rebuild',action='store_true',help='Re-render published pages without advancing the schedule unless due')
+    parser.add_argument('--backfill',action='store_true',help='Fill elapsed daily slots starting from the first publication')
     args=parser.parse_args()
-    publish(args.source,args.output,args.state_dir,args.origin,rebuild=args.rebuild)
+    publish(args.source,args.output,args.state_dir,args.origin,rebuild=args.rebuild,backfill=args.backfill)

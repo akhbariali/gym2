@@ -12,7 +12,8 @@
 @media(max-width:600px){.home-slideshow .home-slide-original{padding:0;min-height:0}}
 
 .home-slide-controls{inset:50% 20px auto;justify-content:space-between;transform:translateY(-50%);pointer-events:none;opacity:0;transition:opacity .2s}
-.home-slide-controls button{pointer-events:auto;width:44px;height:44px;background:#fffD;box-shadow:0 3px 15px #0002}
+.home-slide-controls button{pointer-events:auto;width:44px;height:44px;border:0;border-radius:8px;background:transparent;font-size:24px}
+.home-slide-controls button:hover,.home-slide-controls button:focus-visible{background:#39251918}
 .home-slideshow:hover .home-slide-controls,.home-slideshow:focus-within .home-slide-controls{opacity:1}
 @media(hover:none){.home-slide-controls{opacity:1}}
 @media(prefers-reduced-motion:reduce){.home-slide-controls{transition:none}}

@@ -16,9 +16,20 @@ class PublisherTests(unittest.TestCase):
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
         self.output=Path(self.temp.name)/'site';self.state=Path(self.temp.name)/'state'
         self.now=datetime(2026,11,15,12,tzinfo=timezone.utc)
-    def run_publish(self,now=None,rebuild=False):
+    def run_publish(self,now=None,rebuild=False,backfill=False):
         with redirect_stdout(io.StringIO()):
-            return p.publish(ROOT/'content/articles.json',self.output,self.state,'https://example.test',now=now or self.now,rebuild=rebuild)
+            return p.publish(ROOT/'content/articles.json',self.output,self.state,'https://example.test',now=now or self.now,rebuild=rebuild,backfill=backfill)
+    def test_backfill_restores_daily_dates_without_publishing_ahead(self):
+        self.run_publish()
+        late = self.now + timedelta(days=4, hours=2)
+        self.run_publish(late)
+        state = self.run_publish(late, backfill=True)
+        self.assertEqual([post['published_at'] for post in state['published']],
+                         [(self.now + timedelta(days=day)).isoformat() for day in range(5)])
+        self.assertEqual(state['published'][1]['original_published_at'], late.isoformat())
+        self.assertEqual(state, self.run_publish(late, backfill=True))
+        self.assertEqual(state, self.run_publish(late))
+        self.assertEqual(len(self.run_publish(self.now + timedelta(days=5))['published']), 6)
     def test_cadence_retries_downtime_and_future_privacy(self):
         state=self.run_publish();self.assertEqual(len(state['published']),1)
         self.assertFalse((self.output/'blog/whey-concentrate-vs-isolate/index.html').exists())

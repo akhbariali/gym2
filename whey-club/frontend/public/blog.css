@@ -11,3 +11,10 @@
 .journal-graphic{background:var(--periwinkle);color:var(--ink)}
 .journal-graphic>b>span{color:var(--ink)}
 .journal-end,.reading-cta{background:var(--periwinkle)}
+.blog-main .article-heading{position:static;background:#f8ebdf;border:0;border-radius:18px;padding:clamp(24px,5vw,60px)}
+.blog-main .journal-hero{background:#f8ebdf}
+.blog-main .journal-graphic{background:#ebc6ac}
+.blog-main .editorial-card[hidden]{display:none}
+.journal-photo{margin:24px 0;color:var(--muted);font-size:.8rem}
+.journal-photo img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:16px}
+.journal-photo figcaption{margin-top:6px}

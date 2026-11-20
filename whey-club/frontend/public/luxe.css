@@ -20,10 +20,11 @@ header{background:var(--paper);border-bottom:1px solid var(--line);position:stic
 .logo b{background:var(--ink);color:var(--accent);width:38px;height:38px;font-size:31px;border-radius:4px}
 .logo small{color:var(--muted)}
 .head>nav{border:0;height:auto;gap:28px;font-size:13px;font-weight:500}
-.head>nav a{position:relative;padding:6px 0;color:#17243fd9;transition:color .2s}
-.head>nav a:hover{color:var(--ink)}
-.head>nav a:after{content:'';position:absolute;inset-inline:0;bottom:-2px;height:2px;background:var(--accent);transform:scaleX(0);transition:transform .25s}
-.head>nav a:hover:after{transform:scaleX(1)}
+.head>nav :is(a,.category-hover-menu>button){position:relative;padding:6px 0;color:#17243fd9;transition:color .2s}
+.head>nav .category-hover-menu>button{padding:6px 0;white-space:nowrap}
+.head>nav :is(a,.category-hover-menu>button):hover{color:var(--ink)}
+.head>nav :is(a,.category-hover-menu>button):after{content:'';position:absolute;inset-inline:0;bottom:-2px;height:2px;background:var(--accent);transform:scaleX(0);transition:transform .25s}
+.head>nav :is(a,.category-hover-menu>button):hover:after{transform:scaleX(1)}
 .cart-button{background:var(--ink);color:#fff;border-radius:999px;padding:9px 16px;font-weight:600}
 .cart-button>span{font-size:18px}
 .cart-button b{background:var(--accent);color:var(--ink)}
@@ -167,7 +168,9 @@ dialog,input{background-color:var(--paper)}
 .footer-brand .logo span{display:inline;line-height:1;color:#fff}
 .footer-brand .logo b{background:var(--accent);color:var(--ink)}
 .footer-trust{display:flex;align-items:center;gap:14px;flex-wrap:wrap;border-top:1px solid #ffffff1a;margin-top:38px;padding-top:22px}
-.badge-slot{display:flex;flex-direction:column;align-items:center;justify-content:center;width:96px;height:96px;border:1px dashed #ffffff40;border-radius:14px;text-align:center;background:#ffffff08}
+.badge-slot{display:flex;flex-direction:column;align-items:center;justify-content:center;width:96px;height:96px;text-align:center}
+.badge-slot a,.badge-slot img{display:block;width:100%;height:100%}
+.badge-slot img{object-fit:contain}
 .badge-slot b{color:#fff;font-size:13px}
 .badge-slot span{font-size:10px;line-height:1.7;color:#e8e5dc99}
 .footer-trust p{flex:1;min-width:240px;font-size:11px;line-height:2.1;color:#e8e5dc80;margin:0}

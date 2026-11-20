@@ -2,9 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import Account from './Account.jsx';
 import ProductPage from './ProductPage.jsx';
-import CategoryMenu from './CategoryMenu.jsx';
 import ShopPage from './ShopPage.jsx';
 import HomeSlideshow from './HomeSlideshow.jsx';
+import SiteLayout from './SiteLayout.jsx';
+import CategoryMenu from './CategoryMenu.jsx';
 import site from '../../content/site.json';
 // Preserve the existing page markup while React owns rendering and API loading.
 const pages = import.meta.glob('./pages/**/index.html', {query:'?raw',import:'default'});
@@ -26,17 +27,23 @@ function Storefront(){
   if(active)setPage(doc.body.innerHTML);
  }catch(e){if(active)setError(e.message)}}load();return()=>{active=false}},[]);
  useEffect(()=>{if(!page)return;let cancelled=false;const added=[];async function start(){for(const item of window.__wheyPageScripts||[]){if(cancelled)return;const script=document.createElement('script');added.push(script);if(item.src){script.src=item.src;await new Promise((resolve,reject)=>{script.onload=resolve;script.onerror=reject;document.body.append(script)})}else{script.textContent=item.text;document.body.append(script)}}}start().catch(console.error);return()=>{cancelled=true;added.forEach(s=>s.remove())}},[page]);
- if(error)return <main className="wrap"><h1>{error}</h1><a href="/">بازگشت به خانه</a></main>;
- if(!page)return <main className="wrap" role="status">در حال بارگذاری…</main>;
+ if(error)return <SiteLayout><main className="wrap"><h1>{error}</h1><a href="/">بازگشت به خانه</a></main></SiteLayout>;
+ if(!page)return <SiteLayout><main className="wrap" role="status">در حال بارگذاری…</main></SiteLayout>;
  return <><div dangerouslySetInnerHTML={{__html:page}}/><CategoryMenu/>{location.pathname==='/'&&<HomeSlideshow/>}</>;
 }
+const journalContent = document.querySelector('#root .blog-main')?.outerHTML;
+
 function Journal(){
- const [items,setItems]=useState(null),[error,setError]=useState('');
- const slug=location.pathname.split('/').filter(Boolean)[1];
- const isCategory=slug==='category';
- useEffect(()=>{fetch('/api/articles/'+(slug&&!isCategory?slug+'/':'')).then(r=>{if(!r.ok)throw new Error('مقاله پیدا نشد');return r.json()}) .then(data=>{if(isCategory){const categories={'whey-protein':'پروتئین وی','supplements':'کراتین و مکمل‌ها','sports-nutrition':'تغذیه ورزشی','training':'تمرین و عضله‌سازی','fitness-lifestyle':'اهداف و سبک زندگی','buying-guides':'راهنمای خرید و ایمنی'};const category=categories[location.pathname.split('/').filter(Boolean)[2]];data.results=data.results.filter(a=>a.category===category)}setItems(data)}).catch(e=>setError(e.message))},[]);
- if(error)return <main className="wrap"><h1>{error}</h1><a href="/blog/">مجله وی کلاب</a></main>;
- if(!items)return <p className="wrap">در حال بارگذاری…</p>;
- return <><header className="wrap blog-header"><a className="logo" href="/">WHEY CLUB</a><a href="/shop/">فروشگاه</a><a href="/blog/">مجله وی کلاب</a></header><main className="wrap blog-main">{items.results?<><h1>مجله وی کلاب</h1><div className="editorial-grid">{items.results.map(a=><a className="editorial-card editorial-body" key={a.slug} href={'/blog/'+(a.url_slug||a.slug)+'/'}><span>{a.category} · حدود ۲ دقیقه مطالعه</span><h2>{a.title}</h2><p>{a.meta_description}</p></a>)}</div></>:<article className="prose"><h1>{items.title}</h1><p>حدود ۲ دقیقه مطالعه · تحریریه وی کلاب</p>{items.content_markdown.split(/\n\n/).filter(p=>!p.startsWith('# ')).map((p,i)=>p.startsWith('##')?<h2 key={i}>{p.replace(/^#+ /,'')}</h2>:<p key={i}>{p}</p>)}<p className="editorial-disclosure">این مطلب آموزشی با کمک هوش مصنوعی تهیه شده و بازبینی تخصصی پزشکی نشده است.</p><h2>منابع</h2>{items.sources.map(s=><p key={s}><a href={s} rel="noopener noreferrer">{s}</a></p>)}</article>}</main></>;
+ useEffect(()=>{
+  if(!journalContent)return;
+  const script=document.createElement('script');
+  script.src='/blog.js';
+  document.body.append(script);
+  return()=>script.remove();
+ },[]);
+ return <SiteLayout textWordmark>{journalContent
+  ? <div dangerouslySetInnerHTML={{__html:journalContent}}/>
+  : <main className="wrap"><h1>مقاله پیدا نشد</h1><a href="/blog/">مجله وی کلاب</a></main>
+ }</SiteLayout>;
 }
 createRoot(document.getElementById('root')).render((location.pathname.startsWith('/account')||location.pathname==='/checkout/')?<Account/>:location.pathname.startsWith('/shop')?<ShopPage/>:location.pathname.startsWith('/products/')?<ProductPage/>:location.pathname.startsWith('/blog')?<Journal/>:<Storefront/>);
