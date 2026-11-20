@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import Account from './Account.jsx';
 import ProductPage from './ProductPage.jsx';
+import HomeSlideshow from './HomeSlideshow.jsx';
 import site from '../../content/site.json';
 // Preserve the existing page markup while React owns rendering and API loading.
 const pages = import.meta.glob('./pages/**/index.html', {query:'?raw',import:'default'});
@@ -25,7 +26,7 @@ function Storefront(){
  useEffect(()=>{if(!page)return;let cancelled=false;const added=[];async function start(){for(const item of window.__wheyPageScripts||[]){if(cancelled)return;const script=document.createElement('script');added.push(script);if(item.src){script.src=item.src;await new Promise((resolve,reject)=>{script.onload=resolve;script.onerror=reject;document.body.append(script)})}else{script.textContent=item.text;document.body.append(script)}}}start().catch(console.error);return()=>{cancelled=true;added.forEach(s=>s.remove())}},[page]);
  if(error)return <main className="wrap"><h1>{error}</h1><a href="/">بازگشت به خانه</a></main>;
  if(!page)return <main className="wrap" role="status">در حال بارگذاری…</main>;
- return <div dangerouslySetInnerHTML={{__html:page}}/>;
+ return <><div dangerouslySetInnerHTML={{__html:page}}/>{location.pathname==='/'&&<HomeSlideshow/>}</>;
 }
 function Journal(){
  const [items,setItems]=useState(null),[error,setError]=useState('');
