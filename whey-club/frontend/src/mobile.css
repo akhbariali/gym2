@@ -25,3 +25,4 @@
 
 .home-product-link{display:block;margin-top:14px;font-size:12px}.category-product a>strong{font-size:14px}
 @media(max-width:760px){body input,body select,body textarea{font-size:16px!important}body .account-form input:not([type=checkbox]):not([type=radio]),body .account-form select{min-height:46px}.page-loading{min-height:55svh}}
+@media(max-width:760px){.natural-home .natural-hero .natural-hero-copy{animation:none!important;opacity:1!important;transform:none!important}}
