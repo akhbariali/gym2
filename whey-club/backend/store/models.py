@@ -27,6 +27,18 @@ class CheckoutDraft(models.Model):
         verbose_name_plural='پیش‌نویس‌های خرید'
     def __str__(self):return f'پیش‌نویس {self.pk}'
 
+class PricingSettings(models.Model):
+    id=models.PositiveSmallIntegerField(primary_key=True,default=1,editable=False)
+    aed_rate=models.PositiveIntegerField('قیمت هر درهم (تومان)',default=77000)
+    class Meta:
+        verbose_name='تنظیمات قیمت درهم'
+        verbose_name_plural='تنظیمات قیمت درهم'
+        constraints=[models.CheckConstraint(condition=models.Q(id=1),name='single_pricing_settings'),models.CheckConstraint(condition=models.Q(aed_rate__gt=0),name='positive_aed_rate')]
+    def __str__(self):return 'نرخ درهم و قیمت محصولات'
+    def clean(self):
+        from django.core.exceptions import ValidationError
+        if not self.aed_rate:raise ValidationError({'aed_rate':'نرخ درهم باید بیشتر از صفر باشد.'})
+
 class Product(models.Model):
     class ProteinType(models.TextChoices):
         ISOLATE='isolate','وی ایزوله'
@@ -45,6 +57,8 @@ class Product(models.Model):
     flavor_name=models.CharField('نام طعم',max_length=80)
     package_size=models.CharField('وزن بسته',max_length=80)
     price=models.PositiveBigIntegerField('قیمت (تومان)')
+    reference_aed_rate=models.PositiveIntegerField('نرخ درهم مبنای قیمت (تومان)',null=True,blank=True,help_text='خالی: قیمت ثابت. قیمت فعلی = قیمت مبنا × نرخ روز ÷ نرخ مبنا؛ گرد به نزدیک‌ترین ۱۰٬۰۰۰ تومان.')
+    shipping_weight_grams=models.PositiveIntegerField('وزن ارسال با بسته‌بندی (گرم)',null=True,blank=True)
     compare_at_price=models.PositiveBigIntegerField('قیمت قبل از تخفیف (تومان)',null=True,blank=True)
     protein_grams=models.PositiveSmallIntegerField('پروتئین در هر وعده (گرم)')
     servings=models.PositiveIntegerField('تعداد وعده در بسته',default=30)
@@ -67,7 +81,7 @@ class Product(models.Model):
         verbose_name='محصول'
         verbose_name_plural='محصولات'
         ordering=['id']
-        constraints=[models.CheckConstraint(condition=models.Q(price__gt=0),name='product_positive_price'),models.CheckConstraint(condition=(models.Q(protein_type='shaker')|models.Q(servings__gt=0)),name='product_positive_servings')]
+        constraints=[models.CheckConstraint(condition=models.Q(price__gt=0),name='product_positive_price'),models.CheckConstraint(condition=(models.Q(protein_type__in=['shaker','creatine'])|models.Q(servings__gt=0)),name='product_positive_servings')]
     def __str__(self):return self.name
     def save(self,*args,**kwargs):
         if not self.slug:
@@ -82,7 +96,7 @@ class Product(models.Model):
         if self.price and self.price>1000000000000:errors['price']='قیمت واردشده بیش از محدوده مجاز است.'
         if not self.price:errors['price']='قیمت باید بیشتر از صفر باشد.'
         if self.protein_type in ['isolate','concentrate','blend'] and (not self.protein_grams or self.protein_grams>100):errors['protein_grams']='پروتئین هر وعده باید بین ۱ تا ۱۰۰ گرم باشد.'
-        if self.protein_type!='shaker' and not self.servings:errors['servings']='تعداد وعده باید بیشتر از صفر باشد.'
+        if self.protein_type not in ['shaker','creatine'] and not self.servings:errors['servings']='تعداد وعده باید بیشتر از صفر باشد.'
         if self.compare_at_price is not None and self.compare_at_price<=self.price:errors['compare_at_price']='قیمت قبلی باید بیشتر از قیمت فعلی باشد.'
         if self.image_url and not self.image_url.startswith('https://'):errors['image_url']='تصویر باید از آدرس HTTPS بارگذاری شود.'
         if self.goals is None:self.goals=[]
@@ -91,9 +105,19 @@ class Product(models.Model):
         if self.nutrition is None:self.nutrition={}
         import math
         if not isinstance(self.nutrition,dict) or any(k not in ['scoop','kcal','protein','carbs','fat','sugar','creatine'] or type(v) not in (int,float) or not math.isfinite(v) or v<0 for k,v in self.nutrition.items()):errors['nutrition']='مقادیر تغذیه باید عددی و نامنفی باشند و فقط کلیدهای scoop، kcal، protein، carbs، fat، sugar مجازند.'
+        if self.reference_aed_rate==0:errors['reference_aed_rate']='نرخ مبنا باید بیشتر از صفر باشد.'
+        if self.shipping_weight_grams==0:errors['shipping_weight_grams']='وزن ارسال باید بیشتر از صفر باشد.'
         if errors:raise ValidationError(errors)
+    @property
+    def selling_price(self):
+        return self.convert_price(self.price)
+    def convert_price(self,value):
+        if not value or not self.reference_aed_rate:return value
+        from decimal import Decimal, ROUND_HALF_UP
+        rate=PricingSettings.objects.values_list('aed_rate',flat=True).get(pk=1)
+        return max(10000,int((Decimal(value)*rate/self.reference_aed_rate/10000).quantize(Decimal('1'),rounding=ROUND_HALF_UP))*10000)
     def as_catalog(self):
-        return {'id':self.pk,'category_id':self.category_node_id,'slug':self.slug,'name':self.name,'en':self.brand_line or self.brand,'goals':self.goals,'brand':self.brand,'type':self.protein_type,'flavor':self.flavor,'flavorName':self.flavor_name,'color':self.color,'size':self.package_size,'price':self.price,'old':self.compare_at_price or 0,'protein':self.protein_grams,'servings':self.servings,'popular':self.popular,'description':self.description,'image_url':self.image_url,'stock':self.stock,'available':self.stock is None or self.stock>0,'category':('accessory' if self.protein_type=='shaker' else 'creatine' if self.protein_type=='creatine' else 'whey'),'nutrition':dict(self.nutrition or {},protein=self.protein_grams),'ingredients':self.ingredients,'allergens':self.allergens,'usage':self.usage,'irc':self.irc_code,'batch':self.batch,'expiry':self.expiry,'pitch':self.description,'is_demo':self.is_demo}
+        return {'id':self.pk,'category_id':self.category_node_id,'slug':self.slug,'name':self.name,'en':self.brand_line or self.brand,'goals':self.goals,'brand':self.brand,'type':self.protein_type,'flavor':self.flavor,'flavorName':self.flavor_name,'color':self.color,'size':self.package_size,'price':self.selling_price,'old':self.convert_price(self.compare_at_price) or 0,'protein':self.protein_grams,'servings':self.servings,'popular':self.popular,'description':self.description,'image_url':self.image_url,'stock':self.stock,'shipping_weight_grams':self.shipping_weight_grams,'available':self.stock is None or self.stock>0,'category':('accessory' if self.protein_type=='shaker' else 'creatine' if self.protein_type=='creatine' else 'whey'),'nutrition':dict(self.nutrition or {},protein=self.protein_grams),'ingredients':self.ingredients,'allergens':self.allergens,'usage':self.usage,'irc':self.irc_code,'batch':self.batch,'expiry':self.expiry,'pitch':self.description,'is_demo':self.is_demo}
 
 class OrderQuerySet(models.QuerySet):
     def verified_sales(self):

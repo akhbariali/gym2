@@ -9,7 +9,7 @@ from django.db.models import Sum,Count,Q,F,Value,BigIntegerField,ExpressionWrapp
 from django.db.models.functions import Coalesce
 from django.utils import timezone
 from django.utils.html import format_html
-from .models import Product,Order,OrderItem,CheckoutDraft,Category
+from .models import Product,Order,OrderItem,CheckoutDraft,Category,PricingSettings
 
 admin.site.site_header='مدیریت وی کلاب'
 admin.site.site_title='وی کلاب'
@@ -37,19 +37,19 @@ def product_report(queryset):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display=('name','brand','protein_type','price','stock','is_active','units_sold','sales_total')
+    list_display=('name','brand','protein_type','selling_price','stock','is_active','units_sold','sales_total')
     list_filter=('is_active','category_node','protein_type','flavor','brand')
     search_fields=('name','slug','brand')
     fieldsets=(
-        ('مشخصات اصلی',{'fields':('name','slug','brand','category_node','protein_type','flavor','flavor_name','package_size','price','compare_at_price','protein_grams','servings')}),
+        ('مشخصات اصلی',{'fields':('name','slug','brand','category_node','protein_type','flavor','flavor_name','package_size','shipping_weight_grams','price','reference_aed_rate','selling_price','compare_at_price','protein_grams','servings')}),
         ('تصویر، موجودی و نمایش',{'fields':('image_url','color','stock','is_active','popular','is_demo')}),
         ('اطلاعات تکمیلی',{'fields':('description','nutrition','ingredients','allergens','usage','irc_code','batch','expiry','brand_line','goals'),'classes':('collapse',)}),
         ('زمان تغییر',{'fields':('updated_at',),'classes':('collapse',)}),
     )
-    readonly_fields=('updated_at',)
+    readonly_fields=('updated_at','selling_price')
     list_per_page=30
     def get_readonly_fields(self,request,obj=None):
-        return ('updated_at','slug') if obj else ('updated_at',)
+        return ('updated_at','selling_price','slug') if obj else ('updated_at','selling_price')
     def get_queryset(self,request):
         qs=super().get_queryset(request)
         if request.user.has_perm('store.view_order'):return product_report(qs)
@@ -130,3 +130,9 @@ class CategoryAdmin(admin.ModelAdmin):
     prepopulated_fields={'slug':('name',)}
     @admin.display(description='نشانی دسته (خودکار)')
     def route(self,obj):return obj.get_absolute_url() if obj.pk else 'پس از ذخیره ساخته می‌شود'
+
+@admin.register(PricingSettings)
+class PricingSettingsAdmin(admin.ModelAdmin):
+    fields=('aed_rate',)
+    def has_add_permission(self,request):return not PricingSettings.objects.exists() and super().has_add_permission(request)
+    def has_delete_permission(self,request,obj=None):return False

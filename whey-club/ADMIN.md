@@ -29,3 +29,12 @@ Validation: `python manage.py test store` on PostgreSQL covers permissions, live
 Product categories: use **دسته‌های محصولات** in `/admin/` to set the Persian name, English URL segment, parent and display order. Assign products with **دسته محصول**. The shop menu, category listing pages, breadcrumbs and sitemap use this tree. URLs follow `/shop/parent/child/`; renaming or moving a category updates all descendants and saves old URLs as permanent redirects. Historical URLs cannot be reassigned to another category. Delete children/reassign products before deleting an empty category. Product detail URLs are unchanged.
 
 The article publisher checks every five minutes and publishes at most one queued article per 24 hours after the previous actual publication. It uses the private application script/content and preserves `/var/lib/whey-club-publisher/publication.json`; never reset this state on deployment.
+
+
+### AED pricing and supplier creatines
+
+Admin → تنظیمات قیمت درهم edits the shared AED rate in tomans (initially 77,000). Product price is the reference price; reference_aed_rate is the exchange rate when that price was set. Selling price = reference price × current rate ÷ reference rate, rounded to the nearest 10,000 tomans, with halves rounded up. Clear a product's reference rate for fixed pricing. Compare-at prices scale too; historical order prices remain unchanged.
+
+Migration 0010 inserts eight editable supplier creatines using the supplied Persian descriptions and HTTPS cover-image URLs. Unknown serving counts are zero and hidden; unknown flavors are marked مطابق موجودی. Match exact flavors and package specifications in admin when available.
+
+Shipping uses packed weight in grams, editable per product. Initial creatine weights estimate net weight + 150g; verify these against actual packed weights. Other products have no packed weight until entered, so prepaid post is unavailable for those baskets. Tipax is recipient-paid. Post tariffs follow the supplied schedule in store/shipping.py; exactly 1kg enters the 1–2kg band, and 7kg or more requires Tipax. Shipping method and fee are snapshotted in the checkout draft.

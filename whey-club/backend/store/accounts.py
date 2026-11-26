@@ -110,6 +110,7 @@ def checkout(request):
         address=Address.objects.filter(pk=d.get('address_id'),user=request.user).first()
         if not address:return fail('یک نشانی متعلق به حساب خود انتخاب کنید.',400)
         if not isinstance(items,list) or not 1<=len(items)<=30:raise ValueError('سبد خرید معتبر نیست.')
+        method=d.get('shipping_method','tipax')
         catalog={p.pk:p.as_catalog() for p in Product.objects.filter(is_active=True)};normalized=[];seen=set();total=0
         for item in items:
             pid=item.get('id');qty=item.get('quantity')
@@ -118,9 +119,14 @@ def checkout(request):
             if p['stock'] is not None and qty>p['stock']:raise ValueError('موجودی محصول کافی نیست.')
             seen.add(pid);total+=p['price']*qty
             normalized.append({'id':pid,'name':p['name'],'quantity':qty,'price':p['price']})
+        from .shipping import postage
+        fee=postage(method,address.city,[(catalog[p['id']]['shipping_weight_grams'],p['quantity']) for p in normalized])
+        subtotal=total;total+=fee
         normalized.sort(key=lambda p:p['id']);snapshot=address_json(address)
+        snapshot['shipping']={'method':method,'fee':fee,'collect_on_delivery':method=='tipax'}
         with transaction.atomic():
             draft,created=CheckoutDraft.objects.get_or_create(user=request.user,key=key,defaults={'items':normalized,'address':snapshot,'total':total})
         if draft.items!=normalized or draft.address!=snapshot:return fail('سبد تغییر کرده است؛ دوباره ادامه دهید.',409)
-        return JsonResponse({'id':draft.id,'status':draft.status,'total':draft.total,'payment_available':False,'payment_url':None,'message':'درگاه پرداخت هنوز فعال نیست. هیچ مبلغی دریافت نشده و سفارش نهایی ثبت نشده است.'},status=201 if created else 200)
-    except (ValueError,TypeError,AttributeError,ValidationError) as e:return fail('سبد یا نشانی معتبر نیست.')
+        return JsonResponse({'id':draft.id,'status':draft.status,'total':draft.total,'subtotal':subtotal,'shipping':snapshot['shipping'],'payment_available':False,'payment_url':None,'message':'درگاه پرداخت هنوز فعال نیست. هیچ مبلغی دریافت نشده و سفارش نهایی ثبت نشده است.'},status=201 if created else 200)
+    except ValueError as e:return fail(str(e))
+    except (TypeError,AttributeError,ValidationError) as e:return fail('سبد یا نشانی معتبر نیست.')
