@@ -1,0 +1,10 @@
+.quantity-control-wrap{display:inline-flex;flex-direction:column;gap:8px;flex-shrink:0}
+.quantity-control{display:inline-flex;align-items:center;justify-content:center;direction:ltr;border:1px solid #dfcaba;border-radius:14px;background:#f7e7d8;padding:2px}
+.quantity-control button,.category-product .quantity-control button{display:grid;place-items:center;min-width:44px;height:44px;padding:0 12px;border:0;border-radius:10px;background:transparent;color:inherit;font:inherit;font-size:20px;cursor:pointer;line-height:1}
+.quantity-control-active{background:var(--paper,#fbfaf7);color:var(--ink,#17243f);border-color:var(--line,#17243f22);box-shadow:0 2px 10px #17243f12;padding:4px}
+.quantity-control-active button,.category-product .quantity-control-active button{background:transparent;border:0;color:var(--ink,#17243f);font-size:26px}
+.quantity-control output{min-width:36px;text-align:center;font-weight:700;font-size:19px}
+.quantity-control button:hover{background:var(--accent,#dff478)}
+.quantity-control button:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+.quantity-control button:disabled{opacity:.4;cursor:default}
+.quantity-error{font-size:12px;color:#b42337;max-width:220px}
