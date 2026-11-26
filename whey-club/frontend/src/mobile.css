@@ -26,3 +26,5 @@
 .home-product-link{display:block;margin-top:14px;font-size:12px}.category-product a>strong{font-size:14px}
 @media(max-width:760px){body input,body select,body textarea{font-size:16px!important}body .account-form input:not([type=checkbox]):not([type=radio]),body .account-form select{min-height:46px}.page-loading{min-height:55svh}}
 @media(max-width:760px){.natural-home .natural-hero .natural-hero-copy{animation:none!important;opacity:1!important;transform:none!important}}
+
+.desktop-category-menu{position:relative}.desktop-category-menu>summary{cursor:pointer;list-style:none;display:flex;gap:5px;align-items:center;padding:10px 0;white-space:nowrap}.desktop-category-menu>summary::-webkit-details-marker{display:none}.desktop-category-panel{position:absolute;inset:100% 0 auto auto;min-width:260px;max-width:calc(100vw - 36px);background:#fbfaf7;border:1px solid #17243f20;border-radius:8px;padding:12px;box-shadow:0 12px 30px #17243f15;z-index:120}.desktop-category-panel a{display:block!important;padding:12px;font-size:13px;border-radius:4px}.desktop-category-panel a:hover{background:#dff478}.desktop-category-panel>div>a:not(:first-child){padding-inline-start:24px}
