@@ -2,6 +2,7 @@ import React,{useEffect,useState} from 'react';
 import SiteLayout from './SiteLayout.jsx';
 import QuantityControl from './QuantityControl.jsx';
 import './product-page.css';
+import LoadingPage from './LoadingPage.jsx';
 
 const number=n=>Number(n).toLocaleString('fa-IR');
 const categoryInfo={whey:['پروتئین وی','/shop/whey-protein/'],creatine:['کراتین','/shop/creatine/'],accessory:['لوازم جانبی','/shop/accessories/']};
@@ -21,7 +22,7 @@ export default function ProductPage(){
  const [categoryName,categoryUrl]=categoryInfo[product?.category]||['فروشگاه','/shop/'];
  const nutrition=nutrients.filter(([key])=>typeof product?.nutrition?.[key]==='number');
  return <SiteLayout><main className="wrap route-main product-detail">
-  {error?<section className="product-empty"><h1>{error}</h1><a href="/shop/">بازگشت به محصولات ←</a></section>:!product?<p role="status">در حال بارگذاری محصول…</p>:<>
+  {error?<section className="product-empty"><h1>{error}</h1><a href="/shop/">بازگشت به محصولات ←</a></section>:!product?<LoadingPage label="در حال بارگذاری محصول…"/>:<>
    <nav className="product-breadcrumbs" aria-label="مسیر صفحه"><a href="/">خانه</a><span>/</span><a href={categoryUrl}>{categoryName}</a><span>/</span><span aria-current="page">{product.name}</span></nav>
    <section className="product-overview" aria-labelledby="product-title">
     <div className="product-gallery"><span className="product-category-tag">{categoryName}</span><img src={product.image_url||'/assets/'+product.color+'.svg'} alt={product.name} fetchPriority="high"/><span className="product-image-caption">{product.brand} · {product.size}</span></div>

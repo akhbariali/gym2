@@ -26,6 +26,8 @@ class AccountsTests(TestCase):
         self.assertEqual(self.post(f'/api/account/addresses/{pk}/delete/',{}).status_code,404)
         self.assertTrue(Address.objects.filter(pk=pk).exists())
     def test_checkout_server_totals_idempotency_and_no_payment(self):
+        from .models import Product
+        Product.objects.filter(pk=1).update(is_active=True)
         self.client.force_login(self.u);pk=self.post('/api/account/addresses/',self.address).json()['id']
         data={'key':'unique-test-key-1','address_id':pk,'items':[{'id':1,'quantity':2,'price':1}]}
         r=self.post('/api/checkout/',data);self.assertEqual(r.status_code,201)

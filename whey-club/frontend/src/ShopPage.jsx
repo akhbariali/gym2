@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from 'react';
 import SiteLayout from './SiteLayout.jsx';
 import './categories.css';
+import LoadingPage from './LoadingPage.jsx';
 const money=n=>Number(n).toLocaleString('fa-IR');
 export default function ShopPage(){
  const [data,setData]=useState(null),[error,setError]=useState(''),[query,setQuery]=useState(''),[sort,setSort]=useState('featured'),[notice,setNotice]=useState('');
@@ -11,10 +12,10 @@ export default function ShopPage(){
  const title=category?.name||'همه محصولات';
  useEffect(()=>{if(data){document.title=title+' | وی کلاب';let canonical=document.querySelector('link[rel=canonical]');if(!canonical){canonical=document.createElement('link');canonical.rel='canonical';document.head.append(canonical)}canonical.href=location.origin+path}},[data,title,path]);
  if(error||invalid)return <SiteLayout><main className="wrap route-main"><h1>{error||'دسته پیدا نشد'}</h1><a href="/shop/">همه محصولات</a></main></SiteLayout>;
- if(!data)return <SiteLayout><main className="wrap route-main" role="status">در حال بارگذاری محصولات…</main></SiteLayout>;
+ if(!data)return <SiteLayout><LoadingPage label="در حال بارگذاری محصولات…"/></SiteLayout>;
  const chain=[];let node=category;while(node){chain.unshift(node);node=data.categories.find(c=>c.id===node.parent_id)}
  const ids=new Set(category?[category.id]:data.categories.map(c=>c.id));let changed=true;while(changed){changed=false;for(const c of data.categories)if(ids.has(c.parent_id)&&!ids.has(c.id)){ids.add(c.id);changed=true}}
- let products=data.products.filter(p=>(!category||ids.has(p.category_id))&&p.name.includes(query.trim()));
+ let products=data.products.filter(p=>!p.is_demo&&(!category||ids.has(p.category_id))&&p.name.includes(query.trim()));
  products=[...products].sort((a,b)=>sort==='low'?a.price-b.price:sort==='high'?b.price-a.price:a.id-b.id);
  function add(p){try{const cart=JSON.parse(localStorage.getItem('wheyclub-cart')||'{}');const quantity=Number.isInteger(cart[p.id])?cart[p.id]:0;const max=Number.isInteger(p.stock)?Math.min(p.stock,99):99;if(quantity>=max){setNotice('بیشتر از موجودی قابل انتخاب نیست.');return}cart[p.id]=quantity+1;localStorage.setItem('wheyclub-cart',JSON.stringify(cart));setNotice(p.name+' به سبد خرید اضافه شد.');window.dispatchEvent(new Event('whey-cart-change'))}catch{setNotice('ذخیره سبد خرید ممکن نشد.')}}
  const categoryBranch=parent=>data.categories.filter(c=>c.parent_id===parent).map(c=><li key={c.id}><a href={c.url} aria-current={c.id===category?.id?'page':undefined}>{c.name}</a>{data.categories.some(x=>x.parent_id===c.id)&&<ul>{categoryBranch(c.id)}</ul>}</li>);

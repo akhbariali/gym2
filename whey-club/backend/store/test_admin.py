@@ -11,6 +11,7 @@ class StoreAdminTests(TestCase):
         self.owner=get_user_model().objects.create(username='admin-test',is_staff=True,is_superuser=True,password='!')
         self.customer=get_user_model().objects.create(username='customer-test',password='!')
         self.p=Product.objects.get(pk=1)
+        self.p.is_active=True;self.p.save()
     def login(self):self.client.force_login(self.owner)
     def order(self,payment='paid',status='pending',quantity=3,reference='verified-test',paid_at=True):
         o=Order.objects.create(user=self.customer,address={'recipient':'test'},total=quantity*100,payment_status=payment,status=status,payment_reference=reference,paid_at=timezone.now() if paid_at else None)
@@ -91,7 +92,7 @@ class CatalogCheckoutTests(TestCase):
         from .models import Address
         user=get_user_model().objects.create(username='stock-customer',password='!')
         address=Address.objects.create(user=user,recipient='test',phone='09123456789',province='test',city='test',postal_code='1234567890',street='test address')
-        p=Product.objects.get(pk=1);p.stock=1;p.price=500000;p.save()
+        p=Product.objects.get(pk=1);p.is_active=True;p.stock=1;p.price=500000;p.save()
         self.client.force_login(user)
         def submit(key,quantity):return self.client.post('/api/checkout/',{'key':key,'address_id':address.pk,'items':[{'id':p.pk,'quantity':quantity,'price':1}]},content_type='application/json')
         self.assertEqual(submit('stock-limit-test',2).status_code,400)

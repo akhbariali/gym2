@@ -40,5 +40,5 @@ class CategoryTests(TestCase):
         owner=get_user_model().objects.create_superuser('category-owner','owner@example.test','a-long-secret-test-password')
         self.client.force_login(owner)
         self.assertEqual(self.client.get('/admin/store/category/').status_code,200)
-        p=Product.objects.first();c=Category.objects.get(slug='creatine');p.category_node=c;p.save()
+        p=Product.objects.filter(is_active=True).first();c=Category.objects.get(slug='creatine');p.category_node=c;p.save()
         self.assertEqual(next(x for x in self.client.get('/api/products/').json()['results'] if x['id']==p.pk)['category_id'],c.pk)
