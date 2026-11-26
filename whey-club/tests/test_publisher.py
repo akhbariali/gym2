@@ -19,6 +19,18 @@ class PublisherTests(unittest.TestCase):
     def run_publish(self,now=None,rebuild=False,backfill=False):
         with redirect_stdout(io.StringIO()):
             return p.publish(ROOT/'content/articles.json',self.output,self.state,'https://example.test',now=now or self.now,rebuild=rebuild,backfill=backfill)
+    def test_rebuild_keeps_one_react_entry_on_empty_categories(self):
+        self.output.mkdir(parents=True)
+        (self.output/'react-entry.json').write_text(json.dumps({'src':'/assets/index-current.js','styles':['/assets/index-current.css']}))
+        empty=self.output/'blog/category/training/index.html';empty.parent.mkdir(parents=True)
+        empty.write_text('<html><head><link rel="stylesheet" href="/assets/index-old.css"></head><body><div id="root"></div><script type="module" src="/assets/index-old.js"></script></body></html>')
+        self.run_publish(rebuild=True);self.run_publish(rebuild=True)
+        text=empty.read_text()
+        self.assertEqual(text.count('type="module"'),1)
+        self.assertEqual(text.count('id="root"'),1)
+        self.assertEqual(text.count('/assets/index-current.css'),1)
+        self.assertNotIn('index-old',text)
+
     def test_backfill_restores_daily_dates_without_publishing_ahead(self):
         self.run_publish()
         late = self.now + timedelta(days=4, hours=2)

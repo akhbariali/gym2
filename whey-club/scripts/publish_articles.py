@@ -61,9 +61,11 @@ def markdown(text):
     return '\n'.join(out), toc
 
 def shell(title, description, body, origin, path, schema=None):
+    if not title.endswith(' | وی کلاب'):
+        title = title.split(' | ')[0] + ' | وی کلاب'
     canonical=origin.rstrip('/')+path
     structured='' if schema is None else '<script type="application/ld+json">'+json.dumps(schema,ensure_ascii=False).replace('<','\\u003c')+'</script>'
-    return f'''<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)}</title><meta name="description" content="{esc(description)}"><meta name="theme-color" content="#dff478"><link rel="canonical" href="{esc(canonical)}"><meta property="og:type" content="{'article' if schema and schema.get('@type')=='Article' else 'website'}"><meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(description)}"><meta property="og:url" content="{esc(canonical)}"><link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/blog.css">{structured}</head><body><div class="announcement">دانش بیشتر. انتخاب آگاهانه‌تر. <span>✦</span> مجله وی کلاب</div><header class="blog-header wrap"><a class="logo" href="/"><b>W</b><div dir="ltr">WHEY<span>CLUB</span><small>TRAIN. EAT. GROW.</small></div></a><nav><a href="/start/">از اینجا شروع کن</a><a href="/blog/" class="active">مجله تمرین و تغذیه</a><a href="/health-calculator/">ماشین حساب سلامت</a><a href="/shop/">مکمل‌ها</a></nav><a class="back-shop" href="/shop/whey-protein/">پروتئینت رو پیدا کن ↙</a></header><main class="wrap blog-main">{body}</main><footer class="wrap"><span>© وی کلاب · دانش، پیش از انتخاب</span><span>مطالب آموزشی‌اند و جایگزین توصیه فردی متخصص سلامت نیستند.</span><a href="/">بازگشت به فروشگاه ←</a></footer><script src="/blog.js" defer></script></body></html>'''
+    return f'''<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)}</title><meta name="description" content="{esc(description)}"><meta name="theme-color" content="#dff478"><link rel="canonical" href="{esc(canonical)}"><meta property="og:type" content="{'article' if schema and schema.get('@type')=='Article' else 'website'}"><meta property="og:title" content="{esc(title)}"><meta property="og:description" content="{esc(description)}"><meta property="og:url" content="{esc(canonical)}"><link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/blog.css">{structured}<link rel="icon" type="image/x-icon" href="/favicon.ico?v=w-tilted-1"></head><body><div class="announcement">دانش بیشتر. انتخاب آگاهانه‌تر. <span>✦</span> مجله وی کلاب</div><header class="blog-header wrap"><a class="logo" href="/"><b>W</b><div dir="ltr">WHEY<span>CLUB</span><small>TRAIN. EAT. GROW.</small></div></a><nav><a href="/start/">از اینجا شروع کن</a><a href="/blog/" class="active">مجله تمرین و تغذیه</a><a href="/health-calculator/">ماشین حساب سلامت</a><a href="/shop/">مکمل‌ها</a></nav><a class="back-shop" href="/shop/whey-protein/">پروتئینت رو پیدا کن ↙</a></header><main class="wrap blog-main">{body}</main><footer class="wrap"><span>© وی کلاب · دانش، پیش از انتخاب</span><span>مطالب آموزشی‌اند و جایگزین توصیه فردی متخصص سلامت نیستند.</span><a href="/">بازگشت به فروشگاه ←</a></footer><script src="/blog.js" defer></script></body></html>'''
 
 def card(article, date):
     return f'''<a class="editorial-card" href="{esc(article_path(article))}" data-category="{esc(article['category'])}"><div class="editorial-art art-{int(article['id'])%4}"><span>WHEY CLUB JOURNAL</span><b>{int(article['id']):02d}</b><i>↗</i></div><div class="editorial-body"><div class="article-category">{esc(article['category'])} <span>حدود ۲ دقیقه مطالعه</span></div><h2>{esc(article['title'])}</h2><p>{esc(article['meta_description'])}</p><div class="read-link"><time datetime="{esc(date)}">{esc(date[:10])}</time><span>مطالعه مقاله ←</span></div></div></a>'''
@@ -113,10 +115,20 @@ def render(articles, published, output, origin, photos=None):
     if entry_file.exists():
         entry_config=json.loads(entry_file.read_text());entry=entry_config['src']
         style_links=''.join('<link rel="stylesheet" href="'+esc(href)+'">' for href in entry_config.get('styles',[]))
+        homepage=output/'index.html'
+        shared_header=re.search(r'<header\b[^>]*>.*?</header>',homepage.read_text(),re.S) if homepage.exists() else None
         for page in (output/'blog').rglob('index.html'):
-            text=page.read_text().replace('</head>',style_links+'</head>')
+            text=page.read_text()
+            # Empty categories may retain a prior build; load exactly one React entry.
+            text=re.sub(r'<script\b[^>]*src="/assets/index-[^"]+\.js"[^>]*>.*?</script>','',text,flags=re.S)
+            text=re.sub(r'<link\b[^>]*href="/assets/index-[^"]+\.css"[^>]*>','',text)
+            text=text.replace('</head>',style_links+'</head>')
+            if shared_header:
+                text=re.sub(r'<header class="blog-header wrap">.*?</header>',lambda _:shared_header.group(),text,count=1,flags=re.S)
             text=re.sub(r'<script src="/blog.js" defer></script>','',text)
-            text=text.replace('<body>','<body><div id="root">').replace('</body>','</div><script type="module" src="'+esc(entry)+'"></script></body>')
+            if 'id="root"' not in text:
+                text=re.sub(r'(<body\b[^>]*>)',r'\1<div id="root">',text,count=1).replace('</body>','</div></body>')
+            text=text.replace('</body>','<script type="module" src="'+esc(entry)+'"></script></body>')
             atomic(page,text)
     atomic(output/'sitemap.xml','<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+''.join('<url><loc>'+esc(origin+u)+'</loc></url>' for u in urls)+'</urlset>')
     atomic(output/'robots.txt','User-agent: *\nAllow: /\nSitemap: '+origin+'/sitemap.xml\n')
